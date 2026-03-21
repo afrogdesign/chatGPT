@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Aggregate Device Guide</title>
+  <style>
+    :root {
+      --bg: #f6f7fb;
+      --card: #ffffff;
+      --ink: #1f2937;
+      --sub: #4b5563;
+      --line: #d1d5db;
+      --blue: #2563eb;
+      --green: #059669;
+      --orange: #b45309;
+      --soft-blue: #eef2ff;
+      --soft-green: #ecfdf5;
+      --soft-orange: #fff7ed;
+      --soft-gray: #f9fafb;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--ink);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Hiragino Sans", "Yu Gothic", sans-serif;
+      line-height: 1.65;
+    }
+    .wrap {
+      max-width: 1180px;
+      margin: 0 auto;
+      padding: 28px 20px 56px;
+    }
+    .hero, .card {
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      box-shadow: 0 10px 24px rgba(0,0,0,.04);
+    }
+    .hero {
+      padding: 28px;
+      margin-bottom: 22px;
+    }
+    .card {
+      padding: 22px;
+      margin-top: 18px;
+    }
+    h1, h2, h3 { margin: 0 0 12px; }
+    h1 { font-size: 34px; line-height: 1.2; }
+    h2 { font-size: 25px; margin-bottom: 14px; }
+    h3 { font-size: 18px; }
+    p, li { color: var(--sub); }
+    .lead {
+      font-size: 17px;
+      margin-top: 12px;
+    }
+    .tag {
+      display: inline-block;
+      padding: 6px 12px;
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: .03em;
+      margin-bottom: 10px;
+      background: var(--soft-blue);
+      color: var(--blue);
+    }
+    .mono {
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      background: #f3f4f6;
+      border-radius: 6px;
+      padding: 2px 7px;
+      color: #111827;
+    }
+    .grid2 {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 18px;
+    }
+    @media (min-width: 900px) {
+      .grid2 { grid-template-columns: 1fr 1fr; }
+    }
+    .flow {
+      display: grid;
+      gap: 12px;
+      margin-top: 16px;
+    }
+    .row {
+      display: grid;
+      grid-template-columns: 1fr auto 1fr auto 1fr;
+      gap: 10px;
+      align-items: center;
+    }
+    @media (max-width: 880px) {
+      .row {
+        grid-template-columns: 1fr;
+      }
+      .arrow { transform: rotate(90deg); }
+    }
+    .box {
+      border: 2px solid var(--line);
+      border-radius: 14px;
+      padding: 14px;
+      min-height: 84px;
+      background: #fff;
+    }
+    .box strong {
+      display: block;
+      color: var(--ink);
+      margin-bottom: 4px;
+    }
+    .box.device { background: #f8fbff; }
+    .box.mac { background: #f6fffb; }
+    .box.track { background: #fafafa; }
+    .arrow {
+      font-size: 28px;
+      font-weight: 700;
+      text-align: center;
+      color: #6b7280;
+    }
+    .checklist {
+      margin: 0;
+      padding-left: 20px;
+    }
+    .pill {
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      padding: 14px;
+      background: var(--soft-gray);
+    }
+    .pill.blue { border-left: 6px solid var(--blue); background: var(--soft-blue); }
+    .pill.green { border-left: 6px solid var(--green); background: var(--soft-green); }
+    .pill.orange { border-left: 6px solid var(--orange); background: var(--soft-orange); }
+    .channels {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 10px;
+      margin-top: 12px;
+    }
+    @media (max-width: 800px) {
+      .channels { grid-template-columns: repeat(2, 1fr); }
+    }
+    .ch {
+      background: #eef2ff;
+      border: 1px solid #c7d2fe;
+      border-radius: 12px;
+      padding: 12px;
+      text-align: center;
+      font-weight: 700;
+      color: #1e3a8a;
+    }
+    .steps {
+      counter-reset: step;
+      display: grid;
+      gap: 12px;
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+    .steps li {
+      background: #fff;
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      padding: 14px 14px 14px 54px;
+      position: relative;
+    }
+    .steps li::before {
+      counter-increment: step;
+      content: counter(step);
+      position: absolute;
+      left: 14px;
+      top: 14px;
+      width: 28px;
+      height: 28px;
+      border-radius: 999px;
+      background: var(--blue);
+      color: #fff;
+      font-weight: 700;
+      display: grid;
+      place-items: center;
+      font-size: 14px;
+    }
+    .mini-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 14px;
+    }
+    @media (min-width: 900px) {
+      .mini-grid { grid-template-columns: 1fr 1fr 1fr; }
+    }
+    .footer {
+      color: #6b7280;
+      font-size: 13px;
+      margin-top: 18px;
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <section class="hero">
+      <div class="tag">Macオーディオの要点整理</div>
+      <h1>Aggregate Device とは何か</h1>
+      <p class="lead">
+        <strong>Aggregate Device</strong> は、Macで複数のオーディオ機器を
+        <strong>1つの仮想オーディオ機器</strong>として束ねる機能です。<br>
+        今回のように <span class="mono">Wireless PRO RX</span> と <span class="mono">Wireless GO II RX</span> を同時に使う時、
+        Mac側からはそれらを <strong>4ch入力の1台</strong> のように扱えるようになります。
+      </p>
+    </section>
+
+    <section class="card">
+      <h2>まず結論</h2>
+      <div class="grid2">
+        <div class="pill blue">
+          <h3>何のために使うのか</h3>
+          <ul class="checklist">
+            <li>USBオーディオ機器が2台ある</li>
+            <li>でも録音アプリは通常、入力機器を1つ選ぶ前提</li>
+            <li>そこで Mac が2台をまとめて1台の入力機器に見せる</li>
+          </ul>
+        </div>
+        <div class="pill green">
+          <h3>今回の意味</h3>
+          <ul class="checklist">
+            <li>PRO受信機 = 2入力</li>
+            <li>GO II受信機 = 2入力</li>
+            <li>Aggregate Device = 合計4入力として扱える</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <section class="card">
+      <h2>今回のRODE構成に当てはめるとこうなる</h2>
+      <div class="flow">
+        <div class="row">
+          <div class="box device">
+            <strong>Wireless PRO RX</strong>
+            2人分を受信<br>
+            Split設定<br>
+            入力1–2
+          </div>
+          <div class="arrow">＋</div>
+          <div class="box device">
+            <strong>Wireless GO II RX</strong>
+            2人分を受信<br>
+            Split設定<br>
+            入力3–4
+          </div>
+          <div class="arrow">→</div>
+          <div class="box mac">
+            <strong>Aggregate Device</strong>
+            Mac上で2台を1台に束ねる
+          </div>
+          <div class="arrow">→</div>
+          <div class="box track">
+            <strong>録音アプリ</strong>
+            4本のモノラルトラックに割り当てる
+          </div>
+        </div>
+      </div>
+
+      <div class="channels">
+        <div class="ch">CH1<br>話者A</div>
+        <div class="ch">CH2<br>話者B</div>
+        <div class="ch">CH3<br>話者C</div>
+        <div class="ch">CH4<br>話者D</div>
+      </div>
+    </section>
+
+    <section class="card">
+      <h2>なぜ便利なのか</h2>
+      <div class="mini-grid">
+        <div class="pill blue">
+          <h3>1. 4人を別トラックで録れる</h3>
+          <p>あとで一人ずつ音量調整・EQ・ノイズ除去ができます。</p>
+        </div>
+        <div class="pill green">
+          <h3>2. 事故に強い</h3>
+          <p>一人だけ小さい、咳が入った、ノイズが出た、という時に救いやすくなります。</p>
+        </div>
+        <div class="pill orange">
+          <h3>3. 編集が圧倒的に楽</h3>
+          <p>全員まとめ録りよりも、カット編集・整音・被り処理がしやすいです。</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="card">
+      <h2>似ている機能との違い</h2>
+      <div class="grid2">
+        <div class="pill blue">
+          <h3>Aggregate Device</h3>
+          <ul class="checklist">
+            <li>複数の入力機器を1つに束ねる</li>
+            <li>入力チャンネル数を増やせる</li>
+            <li>録音・配信・DAW向き</li>
+          </ul>
+        </div>
+        <div class="pill orange">
+          <h3>Multi-Output Device</h3>
+          <ul class="checklist">
+            <li>複数の出力先へ同時に再生する</li>
+            <li>スピーカーやヘッドホンの同時出力向き</li>
+            <li>録音入力をまとめる用途ではない</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <section class="card">
+      <h2>作り方</h2>
+      <ol class="steps">
+        <li>Wireless PRO RX と Wireless GO II RX を、USBでMacへ接続する</li>
+        <li>Macの <span class="mono">Audio MIDI設定</span> を開く</li>
+        <li>左下の <span class="mono">＋</span> を押して <span class="mono">Aggregate Deviceを作成</span> を選ぶ</li>
+        <li>一覧で PRO RX と GO II RX にチェックを入れる</li>
+        <li>どちらか1台を <span class="mono">Clock Source</span> にする</li>
+        <li>もう片方の機器には <span class="mono">Drift Correction</span> を入れる</li>
+        <li>サンプルレートをできれば <span class="mono">48kHz</span> にそろえる</li>
+        <li>録音アプリで Aggregate Device を入力機器に選び、4本のモノラルトラックへ割り当てる</li>
+      </ol>
+    </section>
+
+    <section class="card">
+      <h2>Clock Source と Drift Correction の意味</h2>
+      <div class="grid2">
+        <div class="pill blue">
+          <h3>Clock Source</h3>
+          <p>
+            2台のオーディオ機器は、内部の時計がわずかにズレます。<br>
+            そこで1台を基準時計にして、全体の同期の基準にします。
+          </p>
+        </div>
+        <div class="pill green">
+          <h3>Drift Correction</h3>
+          <p>
+            基準ではない側のわずかなズレを、Mac側で補正する機能です。<br>
+            長時間録音でズレたり、プチプチノイズが出たりするのを防ぎやすくなります。
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <section class="card">
+      <h2>注意点</h2>
+      <div class="mini-grid">
+        <div class="pill orange">
+          <h3>チャンネル順は必ず確認</h3>
+          <p>Input 1〜4 が誰に対応しているか、本番前に声出しや拍手で確認した方が安全です。</p>
+        </div>
+        <div class="pill orange">
+          <h3>サンプルレートはそろえる</h3>
+          <p><span class="mono">44.1kHz</span> と <span class="mono">48kHz</span> が混ざると不安定になりやすいです。</p>
+        </div>
+        <div class="pill orange">
+          <h3>録音アプリによって扱いやすさが違う</h3>
+          <p>4トラック別録りなら、Logic Pro、Reaper、Audition、OBS系の方が扱いやすいです。</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="card">
+      <h2>おすすめ実運用</h2>
+      <div class="grid2">
+        <div class="pill green">
+          <h3>RODE側</h3>
+          <ul class="checklist">
+            <li>PRO RX = Split</li>
+            <li>GO II RX = Split</li>
+            <li>全送信機 = オンボード録音ON</li>
+          </ul>
+        </div>
+        <div class="pill blue">
+          <h3>Mac側</h3>
+          <ul class="checklist">
+            <li>Aggregate Device 作成</li>
+            <li>Clock Source を1台決める</li>
+            <li>もう1台に Drift Correction</li>
+            <li>48kHz で統一</li>
+          </ul>
+        </div>
+      </div>
+      <div class="pill" style="margin-top:14px;">
+        <h3>録音ソフト側</h3>
+        <ul class="checklist">
+          <li>4本のモノラルトラックを作る</li>
+          <li>Input 1〜4 をそれぞれ割り当てる</li>
+          <li>録音前に全員分テストする</li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="card">
+      <h2>一言でまとめると</h2>
+      <p>
+        Aggregate Device は、<strong>2台のRODE受信機を、Mac上で1台の4ch入力機器として扱うための仕組み</strong>です。<br>
+        4人を後でしっかり編集したいなら、<strong>Mac + Aggregate Device + 4モノラルトラック</strong> が最も効率的です。
+      </p>
+      <p class="footer">
+        補助的な考え方としては、Mac収録が本番、各送信機の内部録音が保険、という二重化が最も事故に強い構成です。
+      </p>
+    </section>
+  </div>
+</body>
+</html>
