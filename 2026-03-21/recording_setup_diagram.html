@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>RODE 4人収録構成図</title>
+  <style>
+    :root {
+      --bg: #f6f7fb;
+      --card: #ffffff;
+      --ink: #1f2937;
+      --sub: #4b5563;
+      --line: #d1d5db;
+      --accent: #2563eb;
+      --accent2: #059669;
+      --warn: #b45309;
+      --soft: #eef2ff;
+      --soft2: #ecfeff;
+      --soft3: #fff7ed;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Hiragino Sans", "Hiragino Kaku Gothic ProN", "Yu Gothic", sans-serif;
+      color: var(--ink);
+      background: var(--bg);
+      line-height: 1.55;
+    }
+    .wrap {
+      max-width: 1280px;
+      margin: 0 auto;
+      padding: 24px;
+    }
+    h1, h2, h3 { margin: 0 0 12px; }
+    h1 { font-size: 32px; }
+    h2 { font-size: 24px; margin-top: 40px; }
+    h3 { font-size: 18px; }
+    p, li { color: var(--sub); }
+    .lead {
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      padding: 20px;
+      margin-bottom: 24px;
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 24px;
+    }
+    @media (min-width: 1100px) {
+      .grid { grid-template-columns: 1fr 1fr; }
+    }
+    .card {
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      padding: 20px;
+      box-shadow: 0 8px 24px rgba(0,0,0,.04);
+    }
+    .tag {
+      display: inline-block;
+      padding: 6px 10px;
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: .03em;
+      margin-bottom: 10px;
+    }
+    .tag.mac { background: var(--soft); color: var(--accent); }
+    .tag.iphone { background: var(--soft2); color: var(--accent2); }
+    .tag.warn { background: var(--soft3); color: var(--warn); }
+    .flow {
+      display: grid;
+      gap: 12px;
+      margin: 16px 0 10px;
+    }
+    .row {
+      display: grid;
+      grid-template-columns: 1fr auto 1fr auto 1fr;
+      gap: 10px;
+      align-items: center;
+    }
+    .box {
+      background: #fff;
+      border: 2px solid var(--line);
+      border-radius: 14px;
+      padding: 14px;
+      min-height: 84px;
+    }
+    .box strong { display: block; color: var(--ink); margin-bottom: 4px; }
+    .box.tx { background: #fafafa; }
+    .box.rx { background: #f8fbff; }
+    .box.main { background: #f6fffb; }
+    .arrow {
+      font-size: 26px;
+      color: #6b7280;
+      font-weight: 700;
+      text-align: center;
+    }
+    .stack {
+      display: grid;
+      gap: 10px;
+    }
+    .mini {
+      border: 1px dashed var(--line);
+      border-radius: 12px;
+      padding: 12px;
+      background: #fcfcfd;
+    }
+    .list {
+      margin: 12px 0 0;
+      padding-left: 20px;
+    }
+    .summary {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 12px;
+      margin-top: 16px;
+    }
+    @media (min-width: 700px) {
+      .summary { grid-template-columns: 1fr 1fr; }
+    }
+    .pillbox {
+      background: #fbfbfb;
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      padding: 14px;
+    }
+    .ok { border-left: 5px solid var(--accent); }
+    .good { border-left: 5px solid var(--accent2); }
+    .warnbox { border-left: 5px solid var(--warn); }
+    .footer {
+      margin-top: 28px;
+      font-size: 13px;
+      color: #6b7280;
+    }
+    .mono {
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      background: #f3f4f6;
+      padding: 2px 6px;
+      border-radius: 6px;
+      color: #111827;
+    }
+    .channel {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 8px;
+      margin-top: 10px;
+    }
+    .channel div {
+      padding: 10px;
+      border-radius: 10px;
+      text-align: center;
+      font-weight: 700;
+      background: #eef2ff;
+      border: 1px solid #c7d2fe;
+    }
+    .channel.two div {
+      grid-column: span 2;
+      background: #ecfeff;
+      border-color: #a5f3fc;
+    }
+    .note {
+      font-size: 13px;
+      color: #6b7280;
+      margin-top: 10px;
+    }
+    .titleline {
+      display:flex; gap:10px; align-items:center; flex-wrap: wrap;
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="lead">
+      <div class="titleline">
+        <h1>RODE Wireless PRO + GO II<br>4人ピンマイク収録 構成図</h1>
+      </div>
+      <p>
+        前提：<span class="mono">1台の受信機に接続できる送信機は2台まで</span>。<br>
+        4人を同時収録するには、<span class="mono">受信機が2台必要</span>です。<br>
+        ここでは、<strong>Macで4トラック別録りする本命構成</strong>と、<strong>iPhoneで手軽に録る簡易構成</strong>を並べて示します。
+      </p>
+    </div>
+
+    <div class="grid">
+      <section class="card">
+        <div class="tag mac">おすすめ本命構成：Mac収録</div>
+        <h2>Macで4人を別トラック収録</h2>
+        <p>編集の自由度が最も高く、後処理が圧倒的に楽な構成です。</p>
+
+        <div class="flow">
+          <div class="row">
+            <div class="stack">
+              <div class="box tx"><strong>話者A</strong>ラベリア → Wireless PRO TX1</div>
+              <div class="box tx"><strong>話者B</strong>ラベリア → Wireless PRO TX2</div>
+            </div>
+            <div class="arrow">→</div>
+            <div class="box rx"><strong>Wireless PRO RX</strong>2人分を受信<br>設定：Split</div>
+            <div class="arrow">→</div>
+            <div class="box main"><strong>Mac</strong>USB-Cで接続<br>入力1–2として認識</div>
+          </div>
+
+          <div class="row">
+            <div class="stack">
+              <div class="box tx"><strong>話者C</strong>ラベリア → Wireless GO II TX1</div>
+              <div class="box tx"><strong>話者D</strong>ラベリア → Wireless GO II TX2</div>
+            </div>
+            <div class="arrow">→</div>
+            <div class="box rx"><strong>Wireless GO II RX</strong>2人分を受信<br>設定：Split</div>
+            <div class="arrow">→</div>
+            <div class="box main"><strong>Mac</strong>USB-Cで接続<br>入力3–4として認識</div>
+          </div>
+        </div>
+
+        <div class="mini">
+          <strong>Mac側の考え方</strong><br>
+          Audio MIDI設定で <span class="mono">Aggregate Device</span> を作成し、2台の受信機を1つの入力機器として束ねます。
+          録音ソフトでは各話者をモノラルトラック4本に割り当てます。
+          <div class="channel">
+            <div>CH1<br>話者A</div>
+            <div>CH2<br>話者B</div>
+            <div>CH3<br>話者C</div>
+            <div>CH4<br>話者D</div>
+          </div>
+        </div>
+
+        <div class="summary">
+          <div class="pillbox ok">
+            <h3>メリット</h3>
+            <ul class="list">
+              <li>4人を個別トラックで録れる</li>
+              <li>ノイズ処理・音量調整・カット編集がしやすい</li>
+              <li>一人だけ音が小さい時も救いやすい</li>
+            </ul>
+          </div>
+          <div class="pillbox warnbox">
+            <h3>必要なもの</h3>
+            <ul class="list">
+              <li>Mac</li>
+              <li>受信機2台をつなぐUSBケーブル</li>
+              <li>4人分のラベリア</li>
+              <li>録音アプリ</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="pillbox good" style="margin-top:12px;">
+          <h3>事故防止の保険</h3>
+          <ul class="list">
+            <li>4台すべての送信機でオンボード録音をON</li>
+            <li>PROは重要話者に回す</li>
+            <li>本番前に各人の入力レベルと録音動作を確認</li>
+          </ul>
+        </div>
+      </section>
+
+      <section class="card">
+        <div class="tag iphone">手軽な簡易構成：iPhone収録</div>
+        <h2>iPhoneで4人をまとめて収録</h2>
+        <p>接続はシンプルですが、ライブ時点では4人完全別トラックにはなりにくい構成です。</p>
+
+        <div class="flow">
+          <div class="row">
+            <div class="stack">
+              <div class="box tx"><strong>話者A</strong>ラベリア → Wireless PRO TX1</div>
+              <div class="box tx"><strong>話者B</strong>ラベリア → Wireless PRO TX2</div>
+            </div>
+            <div class="arrow">→</div>
+            <div class="box rx"><strong>Wireless PRO RX</strong>設定：Merge</div>
+            <div class="arrow">↘</div>
+            <div class="box main" rowspan="2"><strong>iPhone</strong>USB-Cまたはアダプタ経由で入力<br>実運用は2系統ミックス</div>
+          </div>
+
+          <div class="row">
+            <div class="stack">
+              <div class="box tx"><strong>話者C</strong>ラベリア → Wireless GO II TX1</div>
+              <div class="box tx"><strong>話者D</strong>ラベリア → Wireless GO II TX2</div>
+            </div>
+            <div class="arrow">→</div>
+            <div class="box rx"><strong>Wireless GO II RX</strong>設定：Merge</div>
+            <div class="arrow">↗</div>
+            <div class="box main"><strong>2受信機を1入力へ</strong><br>SC11や対応IFで合流</div>
+          </div>
+        </div>
+
+        <div class="mini">
+          <strong>iPhone側の考え方</strong><br>
+          2台の受信機をまとめて1つの入力へ入れます。<br>
+          そのため、収録時の見え方は「4人別々」ではなく、実質は次のような2系統になりやすいです。
+          <div class="channel two">
+            <div>左または系統1<br>話者A + 話者B</div>
+            <div>右または系統2<br>話者C + 話者D</div>
+          </div>
+        </div>
+
+        <div class="summary">
+          <div class="pillbox good">
+            <h3>メリット</h3>
+            <ul class="list">
+              <li>機動力が高い</li>
+              <li>現場セットアップが速い</li>
+              <li>カメラ代わりにそのまま動画収録しやすい</li>
+            </ul>
+          </div>
+          <div class="pillbox warnbox">
+            <h3>注意点</h3>
+            <ul class="list">
+              <li>4人完全別トラック運用には向かない</li>
+              <li>一人だけの修正がしにくい</li>
+              <li>最終品質は内部録音の回収が前提になりやすい</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="pillbox ok" style="margin-top:12px;">
+          <h3>事故防止の保険</h3>
+          <ul class="list">
+            <li>4台すべての送信機でオンボード録音をON</li>
+            <li>あとで必要なら各TXの内部録音をMacへ吸い上げて救済</li>
+            <li>その場で簡単に録りたい時の方法と割り切る</li>
+          </ul>
+        </div>
+      </section>
+    </div>
+
+    <section class="card" style="margin-top:24px;">
+      <div class="tag warn">最終判断</div>
+      <h2>どちらを選ぶべきか</h2>
+      <div class="summary">
+        <div class="pillbox ok">
+          <h3>Macを選ぶべきケース</h3>
+          <ul class="list">
+            <li>ポッドキャスト</li>
+            <li>対談・座談会</li>
+            <li>あとでちゃんと編集したい</li>
+            <li>4人を別々に整音したい</li>
+          </ul>
+        </div>
+        <div class="pillbox good">
+          <h3>iPhoneを選ぶべきケース</h3>
+          <ul class="list">
+            <li>現場で素早く撮りたい</li>
+            <li>動画も同時に押さえたい</li>
+            <li>編集を最小限にしたい</li>
+            <li>内部録音を保険として使える</li>
+          </ul>
+        </div>
+      </div>
+      <p class="footer">
+        ひとことで言うと、<strong>完成品質優先ならMac</strong>、<strong>手軽さ優先ならiPhone</strong>です。<br>
+        ただし、4人を後でしっかり扱う前提なら、結局は <span class="mono">Mac + 4トラック別録り</span> が最も効率的です。
+      </p>
+    </section>
+  </div>
+</body>
+</html>
