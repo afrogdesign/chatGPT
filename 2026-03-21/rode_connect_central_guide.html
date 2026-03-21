@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>RØDE Connect + Wireless PRO / GO II Guide</title>
+  <style>
+    :root{
+      --bg:#0b0f16;
+      --panel:#121826;
+      --panel2:#0f1520;
+      --soft:#1a2436;
+      --line:#283349;
+      --text:#ecf2ff;
+      --muted:#b8c2d9;
+      --accent:#72a7ff;
+      --accent2:#82e7c6;
+      --warn:#ffd66e;
+      --danger:#ff9696;
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      font-family:-apple-system,BlinkMacSystemFont,"Hiragino Sans","Noto Sans JP","Yu Gothic",sans-serif;
+      background:linear-gradient(180deg,#0a0e15,#101726);
+      color:var(--text);
+      line-height:1.75;
+    }
+    .wrap{width:min(1200px,calc(100% - 32px));margin:0 auto;padding:28px 0 60px}
+    .hero,.panel{background:linear-gradient(180deg,rgba(18,24,38,.96),rgba(15,21,32,.96));border:1px solid rgba(255,255,255,.07);border-radius:20px;box-shadow:0 18px 50px rgba(0,0,0,.28)}
+    .hero{padding:28px;margin-bottom:22px}
+    .panel{padding:24px;margin-bottom:22px}
+    h1,h2,h3{line-height:1.3;margin:0 0 14px}
+    h1{font-size:clamp(30px,4.5vw,48px)}
+    h2{font-size:clamp(22px,3vw,32px);padding-bottom:10px;border-bottom:1px solid rgba(255,255,255,.08)}
+    h3{font-size:20px}
+    p{margin:0 0 12px}
+    .lead{font-size:18px;color:var(--muted);max-width:960px}
+    .tags{display:flex;gap:10px;flex-wrap:wrap;margin-top:14px}
+    .tag{padding:8px 12px;border-radius:999px;border:1px solid rgba(255,255,255,.08);background:rgba(255,255,255,.04);font-size:14px}
+    .grid{display:grid;grid-template-columns:1.15fr .85fr;gap:22px}
+    .toc ul,.list ul,.steps ol{margin:0;padding-left:22px}
+    .toc li,.list li,.steps li{margin:8px 0}
+    .toc a{color:var(--text);text-decoration:none;border-bottom:1px dashed rgba(255,255,255,.22)}
+    .box{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.07);border-radius:16px;padding:16px}
+    .note{border-left:4px solid var(--accent2);padding:14px 16px;border-radius:12px;background:rgba(130,231,198,.08);margin-top:14px}
+    .warn{border-left:4px solid var(--warn);padding:14px 16px;border-radius:12px;background:rgba(255,214,110,.09);margin-top:14px}
+    .danger{border-left:4px solid var(--danger);padding:14px 16px;border-radius:12px;background:rgba(255,150,150,.09);margin-top:14px}
+    .tabs{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:16px}
+    .tablink{border:none;border-radius:999px;padding:10px 14px;background:#1a2436;color:var(--text);cursor:pointer;font-size:14px}
+    .tablink.active{background:var(--accent);color:#08111f;font-weight:700}
+    .tabcontent{display:none}
+    .tabcontent.active{display:block}
+    .kv{display:grid;grid-template-columns:220px 1fr;gap:16px;padding:14px 0;border-bottom:1px solid rgba(255,255,255,.08)}
+    .kv:last-child{border-bottom:none}
+    .key{font-weight:700;color:#fff}
+    .muted{color:var(--muted)}
+    code{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;background:rgba(255,255,255,.07);padding:2px 6px;border-radius:8px}
+    .diagram{background:#0a0f19;border:1px solid rgba(255,255,255,.08);border-radius:18px;padding:16px;overflow:auto}
+    svg{display:block;width:100%;height:auto}
+    footer{text-align:center;color:var(--muted);font-size:14px;margin-top:24px}
+    .mini{font-size:14px;color:var(--muted)}
+    @media (max-width:900px){
+      .grid,.kv{grid-template-columns:1fr}
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <section class="hero">
+      <h1>RØDE Connect を中心にした<br>Wireless PRO + GO II 構築ガイド</h1>
+      <p class="lead">このページは、<strong>RØDE Connect を収録の中心</strong>に置いたときの接続図、設定の考え方、そして <strong>RØDE Connect / RØDE Central</strong> の主要設定をまとめた実践ガイドです。特に <strong>4人収録・マルチチャンネル録音・モニター確認</strong> を前提に整理しています。</p>
+      <div class="tags">
+        <span class="tag">RØDE Connect 中心</span>
+        <span class="tag">Wireless PRO + GO II</span>
+        <span class="tag">4ch収録対応</span>
+        <span class="tag">設定画面の意味を詳解</span>
+      </div>
+    </section>
+
+    <section class="grid">
+      <div class="panel list">
+        <h2>このガイドで分かること</h2>
+        <ul>
+          <li>RØDE Connect を中心にした構築図</li>
+          <li>Mac との配線の考え方</li>
+          <li>RØDE Connect の Preferences 各項目の意味</li>
+          <li>RØDE Central の Audio / Transmitter / Device 系設定の意味</li>
+          <li>4人収録時の実用的なおすすめ値</li>
+        </ul>
+      </div>
+      <div class="panel toc">
+        <h2>目次</h2>
+        <ul>
+          <li><a href="#diagram">1. 構築図</a></li>
+          <li><a href="#connect">2. RØDE Connect の設定解説</a></li>
+          <li><a href="#central">3. RØDE Central の設定解説</a></li>
+          <li><a href="#tips">4. 実践のコツ</a></li>
+        </ul>
+      </div>
+    </section>
+
+    <section id="diagram" class="panel">
+      <h2>1. RØDE Connect を中心にした構築図</h2>
+      <p>基本思想はシンプルです。<strong>受信機を2台とも Mac に USB 接続</strong>し、<strong>RØDE Connect に入力として集約</strong>します。録音は RØDE Connect で行い、モニターは Mac 側のヘッドホン出力またはオーディオ出力先から確認します。</p>
+      <div class="diagram">
+        <svg viewBox="0 0 1200 620" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="RØDE Connect を中心とした Wireless PRO と Wireless GO II の構築図">
+          <defs>
+            <linearGradient id="a" x1="0" y1="0" x2="1" y2="1">
+              <stop offset="0%" stop-color="#213054"/>
+              <stop offset="100%" stop-color="#16213d"/>
+            </linearGradient>
+            <linearGradient id="b" x1="0" y1="0" x2="1" y2="1">
+              <stop offset="0%" stop-color="#173b3a"/>
+              <stop offset="100%" stop-color="#183051"/>
+            </linearGradient>
+            <marker id="arrow" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto">
+              <path d="M0,0 L12,6 L0,12 z" fill="#9ec4ff"/>
+            </marker>
+          </defs>
+          <rect x="30" y="60" width="290" height="180" rx="24" fill="url(#a)" stroke="#6da3ff" stroke-opacity=".45"/>
+          <text x="55" y="105" fill="#eef2ff" font-size="30" font-weight="700">Wireless GO II</text>
+          <text x="55" y="145" fill="#b8c2d9" font-size="22">TX1 / TX2 → RX</text>
+          <text x="55" y="182" fill="#82e7c6" font-size="20">USB-CでMacへ接続</text>
+          <text x="55" y="214" fill="#b8c2d9" font-size="18">必要なら Split で別ch化</text>
+
+          <rect x="30" y="340" width="290" height="180" rx="24" fill="url(#a)" stroke="#6da3ff" stroke-opacity=".45"/>
+          <text x="55" y="385" fill="#eef2ff" font-size="30" font-weight="700">Wireless PRO</text>
+          <text x="55" y="425" fill="#b8c2d9" font-size="22">TX1 / TX2 → RX</text>
+          <text x="55" y="462" fill="#82e7c6" font-size="20">USB-CでMacへ接続</text>
+          <text x="55" y="494" fill="#b8c2d9" font-size="18">32-bit float内部録音も活用可</text>
+
+          <rect x="430" y="120" width="340" height="340" rx="28" fill="#121826" stroke="#9ec4ff" stroke-opacity=".55"/>
+          <text x="475" y="180" fill="#eef2ff" font-size="38" font-weight="800">Mac</text>
+          <text x="475" y="228" fill="#b8c2d9" font-size="24">RØDE Connect</text>
+          <text x="475" y="270" fill="#b8c2d9" font-size="22">Input 1: GO II</text>
+          <text x="475" y="308" fill="#b8c2d9" font-size="22">Input 2: PRO</text>
+          <text x="475" y="346" fill="#82e7c6" font-size="22">Recording: Multi-channel</text>
+          <text x="475" y="384" fill="#82e7c6" font-size="22">Monitor Mix: Microphones Included</text>
+          <text x="475" y="422" fill="#b8c2d9" font-size="22">Exportで各トラックを書き出し</text>
+
+          <rect x="870" y="90" width="280" height="120" rx="24" fill="url(#b)" stroke="#82e7c6" stroke-opacity=".45"/>
+          <text x="905" y="140" fill="#eef2ff" font-size="28" font-weight="700">ヘッドホン / イヤホン</text>
+          <text x="905" y="178" fill="#b8c2d9" font-size="20">Macの Monitor Out へ</text>
+
+          <rect x="870" y="260" width="280" height="120" rx="24" fill="url(#b)" stroke="#82e7c6" stroke-opacity=".45"/>
+          <text x="905" y="310" fill="#eef2ff" font-size="28" font-weight="700">録音ファイル</text>
+          <text x="905" y="348" fill="#b8c2d9" font-size="20">Multi-channel Export</text>
+
+          <rect x="870" y="430" width="280" height="120" rx="24" fill="url(#b)" stroke="#82e7c6" stroke-opacity=".45"/>
+          <text x="905" y="480" fill="#eef2ff" font-size="28" font-weight="700">RØDE Central</text>
+          <text x="905" y="518" fill="#b8c2d9" font-size="20">事前設定・内部録音管理</text>
+
+          <line x1="320" y1="150" x2="430" y2="220" stroke="#9ec4ff" stroke-width="5" marker-end="url(#arrow)"/>
+          <line x1="320" y1="430" x2="430" y2="360" stroke="#9ec4ff" stroke-width="5" marker-end="url(#arrow)"/>
+          <line x1="770" y1="180" x2="870" y2="150" stroke="#9ec4ff" stroke-width="5" marker-end="url(#arrow)"/>
+          <line x1="770" y1="330" x2="870" y2="320" stroke="#9ec4ff" stroke-width="5" marker-end="url(#arrow)"/>
+          <line x1="770" y1="420" x2="870" y2="480" stroke="#9ec4ff" stroke-width="5" marker-end="url(#arrow)"/>
+        </svg>
+      </div>
+      <div class="note">
+        <strong>要点：</strong>RØDE Connect は収録の中心、RØDE Central は <strong>機材側の事前設定</strong> と <strong>内部録音の管理</strong> の役割に分けると理解しやすいです。
+      </div>
+    </section>
+
+    <section id="connect" class="panel">
+      <h2>2. RØDE Connect の設定画面解説</h2>
+      <div class="tabs">
+        <button class="tablink active" onclick="openTab(event,'pref')">Preferences</button>
+        <button class="tablink" onclick="openTab(event,'rec')">録音と書き出し</button>
+        <button class="tablink" onclick="openTab(event,'monitor')">モニターの考え方</button>
+      </div>
+
+      <div id="pref" class="tabcontent active">
+        <div class="kv"><div class="key">Monitor Out</div><div><strong>日本語：</strong>モニター出力先。<br><span class="muted">RØDE Connect の音をどこへ出すかを決めます。Mac内蔵スピーカー、ヘッドホン、外部出力機器などを選ぶ場所です。収録時はハウリング防止のため、基本は <strong>ヘッドホン / イヤホン</strong> 推奨です。</span></div></div>
+        <div class="kv"><div class="key">Monitor Mix</div><div><strong>日本語：</strong>モニターに含める音。<br><span class="muted"><code>Microphones Included</code> はマイク音を含める、<code>Microphones Excluded</code> はマイク音を除外する設定です。収録中に自分たちの声を確認したいなら <strong>Included</strong> を使います。</span></div></div>
+        <div class="kv"><div class="key">Recording</div><div><strong>日本語：</strong>録音方式。<br><span class="muted"><code>Stereo</code> は完成ミックスを1本で残す向き、<code>Multi-channel</code> は後で各トラックを分けて編集したい向きです。4人収録なら通常は <strong>Multi-channel</strong> が本命です。</span></div></div>
+        <div class="kv"><div class="key">Latency</div><div><strong>日本語：</strong>遅延設定。<br><span class="muted">音の返りの速さと、Macへの負荷のバランスです。まずは <strong>Low</strong> で安定動作を優先し、返りの遅さが気になる場合だけより低遅延側を検討します。</span></div></div>
+        <div class="kv"><div class="key">Tooltips</div><div><strong>日本語：</strong>説明ポップアップ。<br><span class="muted">画面上で補助説明を表示するかどうかです。慣れるまでは有効のままで問題ありません。</span></div></div>
+        <div class="kv"><div class="key">Optional Firmware</div><div><strong>日本語：</strong>オプションのファームウェア。<br><span class="muted">通常更新とは別の候補を含めるか、追加的なファームウェア要素を扱うための項目に見えます。安定重視なら、むやみに変更せず、必要時のみ触るのが安全です。</span></div></div>
+        <div class="kv"><div class="key">Local Recordings</div><div><strong>日本語：</strong>ローカル録音の保存先。<br><span class="muted">収録データの保存場所です。最初は既定の保存先でも構いませんが、案件ごとに探しやすくするなら専用フォルダを切ると運用が楽です。</span></div></div>
+        <div class="warn"><strong>おすすめ設定：</strong><br>4人収録なら <code>Monitor Out = ヘッドホン</code>、<code>Monitor Mix = Microphones Included</code>、<code>Recording = Multi-channel</code>、<code>Latency = Low</code> から始めるのが安全です。</div>
+      </div>
+
+      <div id="rec" class="tabcontent">
+        <h3>録音と書き出しの考え方</h3>
+        <p><strong>Multi-channel</strong> で録っておけば、書き出し時に各トラックを分離して扱いやすくなります。作業感覚としては、まず RØDE Connect 内で録り、あとから <strong>Export</strong> で DAW 向け素材を整える流れです。</p>
+        <div class="list">
+          <ul>
+            <li><strong>WAV</strong>：編集向け。音質劣化なし。</li>
+            <li><strong>MP3</strong>：共有向け。軽いが編集素材としては不利。</li>
+            <li><strong>Frequency</strong>：サンプルレート。通常は収録全体の一貫性を優先。</li>
+            <li><strong>Quality</strong>：主にMP3の品質設定。</li>
+            <li><strong>Loudness (LUFs)</strong>：配信先や用途に合わせたラウドネス基準。</li>
+          </ul>
+        </div>
+        <div class="note"><strong>実務上のコツ：</strong>編集用にはまず <strong>WAV</strong> を書き出し、そのあと共有版として MP3 を別途作る流れが扱いやすいです。</div>
+      </div>
+
+      <div id="monitor" class="tabcontent">
+        <h3>モニターの考え方</h3>
+        <p>収録中の確認は、基本的に <strong>Mac 側の出力を使う</strong> と理解すると整理しやすいです。受信機側の 3.5mm モニターを使う手もありますが、RØDE Connect を中心にするなら、まずは Connect の Monitor Out で統一したほうが分かりやすいです。</p>
+        <div class="list">
+          <ul>
+            <li><strong>全体を確認したい</strong> → Mac の Monitor Out にヘッドホン</li>
+            <li><strong>自分たちの声も確認したい</strong> → Monitor Mix を Microphones Included</li>
+            <li><strong>ハウリングを避けたい</strong> → スピーカーではなくヘッドホン</li>
+            <li><strong>遅れが気になる</strong> → Latency を見直す</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <section id="central" class="panel">
+      <h2>3. RØDE Central の設定解説</h2>
+      <div class="tabs">
+        <button class="tablink active" onclick="openTab(event,'audio')">Audio</button>
+        <button class="tablink" onclick="openTab(event,'transmitter')">Transmitter</button>
+        <button class="tablink" onclick="openTab(event,'device')">Device</button>
+        <button class="tablink" onclick="openTab(event,'workflow')">おすすめ運用</button>
+      </div>
+
+      <div id="audio" class="tabcontent active">
+        <h3>Audio ページで見るべきもの</h3>
+        <div class="kv"><div class="key">Routing / Split / Merge</div><div><strong>意味：</strong>送信機2本の音をどう出すか。<br><span class="muted">話者ごとに分けて編集したいなら <strong>Split</strong> が基本。1本のミックスとして扱いたいなら Merge です。</span></div></div>
+        <div class="kv"><div class="key">Safety Channel</div><div><strong>意味：</strong>片側を低めの予備レベルで記録する考え方。<br><span class="muted">大声や不意のピークに備える保険的な設定です。現場の安全性を重視するなら有効です。</span></div></div>
+        <div class="kv"><div class="key">Fine Gain / Output Gain</div><div><strong>意味：</strong>出力レベルの細かな調整。<br><span class="muted">接続先に合わせて最適レベルへ詰める項目です。録り側で余裕を持たせると事故が減ります。</span></div></div>
+        <div class="kv"><div class="key">Pad</div><div><strong>意味：</strong>レベルを減衰させる。<br><span class="muted">出力が強すぎるときに落として、歪みや過入力を避けるための設定です。</span></div></div>
+        <div class="kv"><div class="key">HPF (High-pass Filter)</div><div><strong>意味：</strong>低域カット。<br><span class="muted">空調、振動、服擦れ、机の振動など低い不要音を減らすのに使います。声中心なら有効な場面が多いです。</span></div></div>
+        <div class="kv"><div class="key">GainAssist</div><div><strong>意味：</strong>レベルの自動補助。<br><span class="muted">Wireless PRO 系で、声量差がある話者でも使いやすくする補助機能です。現場の安定感を重視するなら有力です。</span></div></div>
+      </div>
+
+      <div id="transmitter" class="tabcontent">
+        <h3>Transmitter ページで見るべきもの</h3>
+        <div class="kv"><div class="key">Internal Recording</div><div><strong>意味：</strong>送信機内部への録音。<br><span class="muted">特に Wireless PRO では 32-bit float 内部録音が強力です。受信側の録音に万一のトラブルがあっても、送信機側を保険にできます。</span></div></div>
+        <div class="kv"><div class="key">Record Mode</div><div><strong>意味：</strong>圧縮 / 非圧縮などの録音方式。<br><span class="muted">音質優先か、収録時間優先かのバランスです。大事な収録では音質優先が基本です。</span></div></div>
+        <div class="kv"><div class="key">Marker / Flag</div><div><strong>意味：</strong>収録中の印。<br><span class="muted">言い直しや重要ポイントの目印として使えます。RØDE製品では製品によってマーカーの扱いが少し異なるので、運用上はまず <strong>収録メモ用</strong> と考えるのが安全です。</span></div></div>
+        <div class="kv"><div class="key">Ø Button</div><div><strong>意味：</strong>本体ボタンの割り当て。<br><span class="muted">ミュートや録音など、どの機能を割り当てるかを決める要素です。現場で押し間違えがない設計にしておくことが大事です。</span></div></div>
+      </div>
+
+      <div id="device" class="tabcontent">
+        <h3>Device ページで見るべきもの</h3>
+        <div class="kv"><div class="key">Name / Label</div><div><strong>意味：</strong>機器名の管理。<br><span class="muted">TX1 / TX2 の役割が混ざらないよう、収録者名や用途で整理しておくと現場がかなり楽になります。</span></div></div>
+        <div class="kv"><div class="key">Firmware</div><div><strong>意味：</strong>機器のファーム更新。<br><span class="muted">相互運用性や安定動作のため、現場前に合わせておくのが基本です。</span></div></div>
+        <div class="kv"><div class="key">Camera Presets / Output Profiles</div><div><strong>意味：</strong>接続先に応じたプリセット。<br><span class="muted">カメラやモバイル、PCなど接続先の違いに応じて、出力レベルや挙動を合わせるための考え方です。</span></div></div>
+        <div class="kv"><div class="key">Storage / Onboard Files</div><div><strong>意味：</strong>内部録音データの管理。<br><span class="muted">送信機側の録音を消す前に、必ずバックアップを取るのが安全です。</span></div></div>
+      </div>
+
+      <div id="workflow" class="tabcontent">
+        <h3>おすすめ運用フロー</h3>
+        <div class="steps">
+          <ol>
+            <li>まず RØDE Central で各機器のファームを更新する</li>
+            <li>Routing を確認し、必要なら Split を選ぶ</li>
+            <li>Wireless PRO は内部録音を有効にし、保険素材を確保する</li>
+            <li>Mac に受信機2台をつなぎ、RØDE Connect へ集約する</li>
+            <li>RØDE Connect は Multi-channel で録る</li>
+            <li>本番前に 10 秒テストして、全員の声とモニター返りを確認する</li>
+            <li>本番終了後、まず録音データをバックアップし、必要なら送信機内部録音も回収する</li>
+          </ol>
+        </div>
+        <div class="note"><strong>おすすめ：</strong>RØDE Connect を本収録、Wireless PRO の内部録音を保険、という二段構えにすると安心です。</div>
+      </div>
+    </section>
+
+    <section id="tips" class="panel list">
+      <h2>4. 実践のコツ</h2>
+      <ul>
+        <li><strong>収録前に必ず10秒テスト</strong>：トラック分離、モニター、ノイズ確認。</li>
+        <li><strong>人ごとに役割を固定</strong>：GO II をゲスト、PRO をホストなど、混乱しない割り振りにする。</li>
+        <li><strong>保存先を固定</strong>：収録ごとに保存場所が変わらないようにする。</li>
+        <li><strong>送信機内部録音を保険に</strong>：特に大事な回は必須級。</li>
+        <li><strong>Export後すぐバックアップ</strong>：Mac本体だけに置かない。</li>
+      </ul>
+      <div class="warn"><strong>注意：</strong>RØDE製品はモデルやファーム差で表記が少し違うことがあります。実際の画面名が少し異なっても、考え方はほぼ同じです。</div>
+    </section>
+
+    <footer>
+      Created for afrogdesign/chatGPT / 2026-03-21<br>
+      File: <code>2026-03-21/rode_connect_central_guide.html</code>
+    </footer>
+  </div>
+
+  <script>
+    function openTab(evt, id){
+      const group = evt.target.closest('.panel');
+      group.querySelectorAll('.tabcontent').forEach(el => el.classList.remove('active'));
+      group.querySelectorAll('.tablink').forEach(el => el.classList.remove('active'));
+      group.querySelector('#' + id).classList.add('active');
+      evt.currentTarget.classList.add('active');
+    }
+  </script>
+</body>
+</html>
