@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Macで Wireless PRO + GO II を同時に RØDE Connect へ入れる手順</title>
+  <style>
+    :root {
+      --bg: #0b1020;
+      --panel: #121936;
+      --panel-2: #182145;
+      --text: #eef2ff;
+      --muted: #b7c0e3;
+      --line: #31407a;
+      --accent: #78a6ff;
+      --accent-2: #9ee6c3;
+      --warn: #ffd27a;
+      --danger: #ff9c9c;
+      --shadow: 0 18px 40px rgba(0,0,0,.25);
+      --radius: 18px;
+    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Hiragino Sans", "Noto Sans JP", "Yu Gothic", sans-serif;
+      background: linear-gradient(180deg, #09101d 0%, #11162b 100%);
+      color: var(--text);
+      line-height: 1.75;
+    }
+    .wrap {
+      width: min(1100px, calc(100% - 32px));
+      margin: 0 auto;
+      padding: 32px 0 64px;
+    }
+    .hero, .card {
+      background: linear-gradient(180deg, rgba(24,33,69,.95), rgba(18,25,54,.95));
+      border: 1px solid rgba(120,166,255,.18);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+    }
+    .hero {
+      padding: 28px;
+      margin-bottom: 20px;
+    }
+    h1, h2, h3 { line-height: 1.3; margin: 0 0 14px; }
+    h1 { font-size: clamp(28px, 4vw, 44px); }
+    h2 { font-size: clamp(22px, 3vw, 30px); }
+    h3 { font-size: 20px; }
+    p { margin: 0 0 12px; }
+    .lead {
+      font-size: 18px;
+      color: var(--muted);
+      max-width: 900px;
+    }
+    .badge-row {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-top: 14px;
+    }
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 12px;
+      border: 1px solid rgba(255,255,255,.12);
+      border-radius: 999px;
+      font-size: 14px;
+      color: var(--text);
+      background: rgba(255,255,255,.05);
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: 1.1fr .9fr;
+      gap: 20px;
+      margin-bottom: 20px;
+    }
+    .card { padding: 24px; }
+    .summary {
+      background: linear-gradient(180deg, rgba(120,166,255,.14), rgba(158,230,195,.10));
+      border: 1px solid rgba(158,230,195,.25);
+    }
+    .toc a {
+      color: var(--text);
+      text-decoration: none;
+      border-bottom: 1px dashed rgba(255,255,255,.2);
+    }
+    .toc ul, .steps ol, .notes ul, .check ul { margin: 0; padding-left: 22px; }
+    .toc li, .notes li, .check li, .steps li { margin: 8px 0; }
+    .section { margin-bottom: 20px; }
+    .kicker {
+      display: inline-block;
+      margin-bottom: 10px;
+      font-size: 13px;
+      letter-spacing: .06em;
+      text-transform: uppercase;
+      color: var(--accent-2);
+    }
+    .flow {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 14px;
+      margin-top: 16px;
+    }
+    .flow .box {
+      padding: 16px;
+      border-radius: 16px;
+      background: rgba(255,255,255,.05);
+      border: 1px solid rgba(255,255,255,.08);
+      min-height: 140px;
+    }
+    .flow .num {
+      display: inline-flex;
+      width: 32px;
+      height: 32px;
+      align-items: center;
+      justify-content: center;
+      border-radius: 999px;
+      background: rgba(120,166,255,.2);
+      border: 1px solid rgba(120,166,255,.4);
+      margin-bottom: 10px;
+      font-weight: 700;
+    }
+    .diagram {
+      background: #0c1228;
+      border: 1px solid rgba(255,255,255,.08);
+      border-radius: 16px;
+      padding: 16px;
+      overflow: auto;
+    }
+    svg { width: 100%; height: auto; display: block; }
+    .mini {
+      font-size: 14px;
+      color: var(--muted);
+    }
+    .warn {
+      border-left: 4px solid var(--warn);
+      padding: 14px 16px;
+      background: rgba(255,210,122,.08);
+      border-radius: 12px;
+      margin-top: 14px;
+    }
+    .danger {
+      border-left: 4px solid var(--danger);
+      padding: 14px 16px;
+      background: rgba(255,156,156,.08);
+      border-radius: 12px;
+      margin-top: 14px;
+    }
+    .ok {
+      border-left: 4px solid var(--accent-2);
+      padding: 14px 16px;
+      background: rgba(158,230,195,.08);
+      border-radius: 12px;
+      margin-top: 14px;
+    }
+    .two {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+    }
+    code {
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      background: rgba(255,255,255,.08);
+      padding: 2px 6px;
+      border-radius: 8px;
+    }
+    footer {
+      margin-top: 30px;
+      color: var(--muted);
+      font-size: 14px;
+      text-align: center;
+    }
+    @media (max-width: 920px) {
+      .grid, .two, .flow { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <section class="hero">
+      <div class="kicker">RØDE Connect Setup Guide</div>
+      <h1>Macで <br>Wireless PRO + GO II を<br>同時に RØDE Connect へ入れる方法</h1>
+      <p class="lead">結論から言うと、<strong>受信機を2台ともUSBでMacへ直結</strong>し、<strong>RØDE Connect でそれぞれを入力として認識させる</strong>形です。GarageBandのように Aggregate Device を組む話とは少し違い、<strong>RØDE Connect 内で完結させる</strong>のがいちばん簡単です。</p>
+      <div class="badge-row">
+        <span class="badge">✅ Mac 直結</span>
+        <span class="badge">✅ 受信機 2台構成</span>
+        <span class="badge">✅ RØDE Connect で録音</span>
+        <span class="badge">✅ 4人収録にも拡張しやすい</span>
+      </div>
+    </section>
+
+    <section class="grid">
+      <div class="card summary">
+        <h2>まず全体像</h2>
+        <p><strong>おすすめ構成はこれです。</strong></p>
+        <ul>
+          <li><strong>Wireless PRO の受信機</strong>を USB-C で Mac に接続</li>
+          <li><strong>Wireless GO II の受信機</strong>を USB-C で Mac に接続</li>
+          <li>Mac で <strong>RØDE Connect</strong> を起動</li>
+          <li>必要なら各受信機を <strong>Split</strong> にして、左右を別チャンネル化</li>
+          <li>モニターは基本 <strong>Mac 側のヘッドホン出力</strong> で行う</li>
+        </ul>
+        <div class="ok">
+          <strong>ポイント：</strong>この用途では、まず <strong>3.5mmアナログ接続ではなく USB 接続</strong> を優先してください。RØDE Connect に入れるなら、デジタル接続のほうが素直です。
+        </div>
+      </div>
+
+      <div class="card toc">
+        <h2>目次</h2>
+        <ul>
+          <li><a href="#wiring">1. 配線図</a></li>
+          <li><a href="#prepare">2. 事前準備</a></li>
+          <li><a href="#steps">3. 設定手順</a></li>
+          <li><a href="#split">4. Split / Merge の考え方</a></li>
+          <li><a href="#mistakes">5. 失敗しやすい点</a></li>
+          <li><a href="#check">6. 最終チェック</a></li>
+        </ul>
+      </div>
+    </section>
+
+    <section id="wiring" class="card section">
+      <h2>1. 配線図</h2>
+      <p>いちばんシンプルな形は、<strong>受信機を2台とも Mac へUSB接続</strong>する構成です。</p>
+      <div class="diagram">
+        <svg viewBox="0 0 1100 520" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Wireless PRO と Wireless GO II を Mac と RODE Connect に接続する配線図">
+          <defs>
+            <linearGradient id="g1" x1="0" y1="0" x2="1" y2="1">
+              <stop offset="0%" stop-color="#24315f" />
+              <stop offset="100%" stop-color="#19254d" />
+            </linearGradient>
+            <linearGradient id="g2" x1="0" y1="0" x2="1" y2="1">
+              <stop offset="0%" stop-color="#173d49" />
+              <stop offset="100%" stop-color="#1b2f53" />
+            </linearGradient>
+            <marker id="arrow" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto">
+              <path d="M0,0 L12,6 L0,12 z" fill="#9bbdff" />
+            </marker>
+          </defs>
+
+          <rect x="28" y="50" width="280" height="150" rx="20" fill="url(#g1)" stroke="#7aa5ff" stroke-opacity=".45" />
+          <text x="52" y="90" fill="#eef2ff" font-size="28" font-weight="700">Wireless PRO</text>
+          <text x="52" y="128" fill="#b7c0e3" font-size="22">TX1 / TX2 → RX</text>
+          <text x="52" y="165" fill="#9ee6c3" font-size="19">受信機を USB-C で Mac へ</text>
+
+          <rect x="28" y="320" width="280" height="150" rx="20" fill="url(#g1)" stroke="#7aa5ff" stroke-opacity=".45" />
+          <text x="52" y="360" fill="#eef2ff" font-size="28" font-weight="700">Wireless GO II</text>
+          <text x="52" y="398" fill="#b7c0e3" font-size="22">TX1 / TX2 → RX</text>
+          <text x="52" y="435" fill="#9ee6c3" font-size="19">受信機を USB-C で Mac へ</text>
+
+          <rect x="430" y="120" width="270" height="280" rx="22" fill="#121936" stroke="#9bbdff" stroke-opacity=".55" />
+          <text x="470" y="175" fill="#eef2ff" font-size="34" font-weight="800">Mac</text>
+          <text x="470" y="220" fill="#b7c0e3" font-size="22">RØDE Connect 起動</text>
+          <text x="470" y="258" fill="#b7c0e3" font-size="22">入力 1: Wireless PRO</text>
+          <text x="470" y="296" fill="#b7c0e3" font-size="22">入力 2: Wireless GO II</text>
+          <text x="470" y="334" fill="#9ee6c3" font-size="22">録音・モニター・レベル確認</text>
+
+          <rect x="805" y="120" width="250" height="120" rx="20" fill="url(#g2)" stroke="#9ee6c3" stroke-opacity=".45" />
+          <text x="840" y="170" fill="#eef2ff" font-size="28" font-weight="700">ヘッドホン</text>
+          <text x="840" y="208" fill="#b7c0e3" font-size="20">基本は Mac 側へ接続</text>
+
+          <rect x="805" y="280" width="250" height="120" rx="20" fill="url(#g2)" stroke="#9ee6c3" stroke-opacity=".45" />
+          <text x="840" y="330" fill="#eef2ff" font-size="28" font-weight="700">録音ファイル</text>
+          <text x="840" y="368" fill="#b7c0e3" font-size="20">RØDE Connect 内で収録</text>
+
+          <line x1="308" y1="125" x2="430" y2="170" stroke="#9bbdff" stroke-width="5" marker-end="url(#arrow)" />
+          <line x1="308" y1="395" x2="430" y2="340" stroke="#9bbdff" stroke-width="5" marker-end="url(#arrow)" />
+          <line x1="700" y1="190" x2="805" y2="190" stroke="#9bbdff" stroke-width="5" marker-end="url(#arrow)" />
+          <line x1="700" y1="340" x2="805" y2="340" stroke="#9bbdff" stroke-width="5" marker-end="url(#arrow)" />
+        </svg>
+      </div>
+      <div class="warn">
+        <strong>大事：</strong>このページの前提は <strong>RØDE Connect で録る</strong> ことです。GarageBand など別アプリへ直接まとめたい話とは別です。
+      </div>
+    </section>
+
+    <section id="prepare" class="card section">
+      <h2>2. 事前準備</h2>
+      <div class="flow">
+        <div class="box">
+          <div class="num">1</div>
+          <h3>全機器を充電</h3>
+          <p>送信機・受信機ともに十分に充電します。収録中の電池切れを避けます。</p>
+        </div>
+        <div class="box">
+          <div class="num">2</div>
+          <h3>RØDE Centralで更新</h3>
+          <p>Wireless PRO も GO II も、まずは <strong>RØDE Central</strong> でファーム更新を先に済ませます。</p>
+        </div>
+        <div class="box">
+          <div class="num">3</div>
+          <h3>ペアリング確認</h3>
+          <p>各送信機がそれぞれの受信機に正常接続され、音が入るかを確認します。</p>
+        </div>
+        <div class="box">
+          <div class="num">4</div>
+          <h3>Splitにするか決める</h3>
+          <p>話者をあとで別々に扱いたいなら、基本は <strong>Split</strong> 推奨です。</p>
+        </div>
+      </div>
+      <div class="danger">
+        <strong>先に注意：</strong><br>
+        受信機を <strong>Merge</strong> のまま使うと、2人ぶんが1つに混ざって扱いにくくなることがあります。<br>
+        編集前提なら、まず <strong>Split</strong> を疑ってください。
+      </div>
+    </section>
+
+    <section id="steps" class="card section steps">
+      <h2>3. 設定手順</h2>
+      <ol>
+        <li>
+          <strong>Wireless PRO の受信機を Mac に USB 接続する</strong><br>
+          できればハブよりも、まずは安定したポートへ直結が安全です。
+        </li>
+        <li>
+          <strong>Wireless GO II の受信機も Mac に USB 接続する</strong><br>
+          2台とも同時に見える状態にします。
+        </li>
+        <li>
+          <strong>RØDE Connect を起動する</strong><br>
+          起動直後に、対応機器として受信機が見えるか確認します。
+        </li>
+        <li>
+          <strong>各デバイスを入力として追加する</strong><br>
+          画面上でマイクソースとして <strong>Wireless PRO</strong> と <strong>Wireless GO II</strong> の両方を読み込みます。
+        </li>
+        <li>
+          <strong>必要なら各チャンネルに名前をつける</strong><br>
+          例：<code>Host</code> / <code>Guest A</code> / <code>Guest B</code> / <code>Guest C</code>
+        </li>
+        <li>
+          <strong>入力レベルを確認する</strong><br>
+          全員に実際の声量で話してもらい、メーターが極端に赤くならないように調整します。
+        </li>
+        <li>
+          <strong>モニター先を確認する</strong><br>
+          基本は <strong>Mac 側のヘッドホン出力</strong>、または Mac に接続したモニター環境を使います。
+        </li>
+        <li>
+          <strong>10秒テスト録音する</strong><br>
+          本番前に必ず短く録って、各人の声が想定どおり分かれているか確認します。
+        </li>
+        <li>
+          <strong>本番録音する</strong><br>
+          ここで初めて本収録に入ります。
+        </li>
+      </ol>
+      <div class="ok">
+        <strong>コツ：</strong>本番前のテスト録音で、<strong>誰がどのチャンネルに入っているか</strong> を口頭で名乗ってもらうと、あとで事故が減ります。
+      </div>
+    </section>
+
+    <section id="split" class="card section two">
+      <div>
+        <h2>4. Split / Merge の考え方</h2>
+        <p><strong>迷ったら Split</strong> で考えると失敗しにくいです。</p>
+        <ul>
+          <li><strong>Split</strong>：送信機ごとに左右や別チャンネルへ分ける</li>
+          <li><strong>Merge</strong>：複数送信機をまとめて1つの信号っぽく扱う</li>
+        </ul>
+        <p>編集時に「人ごとに音量やノイズ処理を変えたい」なら、Split のほうが圧倒的に楽です。</p>
+      </div>
+      <div>
+        <div class="diagram">
+          <svg viewBox="0 0 500 250" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Split と Merge の違い">
+            <rect x="20" y="20" width="200" height="90" rx="16" fill="#1a274d" stroke="#7aa5ff" stroke-opacity=".45" />
+            <text x="40" y="55" fill="#eef2ff" font-size="24" font-weight="700">Split</text>
+            <text x="40" y="88" fill="#b7c0e3" font-size="18">TX1 → Ch 1</text>
+            <text x="40" y="112" fill="#b7c0e3" font-size="18">TX2 → Ch 2</text>
+
+            <rect x="280" y="20" width="200" height="90" rx="16" fill="#1a274d" stroke="#7aa5ff" stroke-opacity=".45" />
+            <text x="300" y="55" fill="#eef2ff" font-size="24" font-weight="700">Merge</text>
+            <text x="300" y="88" fill="#b7c0e3" font-size="18">TX1 + TX2</text>
+            <text x="300" y="112" fill="#b7c0e3" font-size="18">→ まとめて扱う</text>
+
+            <rect x="20" y="145" width="460" height="80" rx="16" fill="#10213a" stroke="#9ee6c3" stroke-opacity=".35" />
+            <text x="40" y="180" fill="#eef2ff" font-size="20" font-weight="700">おすすめ</text>
+            <text x="40" y="206" fill="#b7c0e3" font-size="18">収録後に編集する前提なら、まず Split を選ぶ。</text>
+          </svg>
+        </div>
+      </div>
+    </section>
+
+    <section id="mistakes" class="card section notes">
+      <h2>5. 失敗しやすい点</h2>
+      <ul>
+        <li><strong>3.5mm ケーブルでつないでいる</strong><br>RØDE Connect に入れるなら、まずは USB 接続で考えるほうが整理しやすいです。</li>
+        <li><strong>RØDE Central の更新をしていない</strong><br>認識不安定や機能差の原因になりやすいです。</li>
+        <li><strong>Merge のまま録ってしまう</strong><br>あとで話者ごとの編集がやりにくくなります。</li>
+        <li><strong>いきなり本番録音する</strong><br>10秒テスト録音は必須です。</li>
+        <li><strong>USB ハブが不安定</strong><br>電力不足や認識不安定が出ることがあります。まずは直結で検証してください。</li>
+        <li><strong>Mac 側の出力先を見ていない</strong><br>録れていても、モニター先が違うと「音が出ない」と勘違いしやすいです。</li>
+      </ul>
+      <div class="warn">
+        <strong>補足：</strong>RØDE Connect 内で収録する場合、<strong>GarageBand 用の Aggregate Device を先に組む必要は通常ありません</strong>。ここを混同するとややこしくなります。
+      </div>
+    </section>
+
+    <section id="check" class="card section check">
+      <h2>6. 最終チェック</h2>
+      <ul>
+        <li>Wireless PRO の受信機が Mac に USB でつながっている</li>
+        <li>Wireless GO II の受信機も Mac に USB でつながっている</li>
+        <li>RØDE Central で更新済み</li>
+        <li>各送信機が正常にペアリング済み</li>
+        <li>必要なら Split 設定済み</li>
+        <li>RØDE Connect で両受信機が見えている</li>
+        <li>全員の声でテスト録音済み</li>
+      </ul>
+      <div class="ok">
+        ここまで通れば、かなり安全に本番へ入れます。
+      </div>
+    </section>
+
+    <footer>
+      Created for afrogdesign/chatGPT / 2026-03-21<br>
+      File: <code>2026-03-21/rode_connect_wireless_setup.html</code>
+    </footer>
+  </div>
+</body>
+</html>
