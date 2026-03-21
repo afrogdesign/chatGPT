@@ -1,0 +1,29 @@
+topic_name: "〇〇"
+max_items_per_run: 5
+max_post_length: 260
+include_urls: true
+language: "ja"
+
+sources:
+  - type: rss
+    name: "Google News"
+    url: "https://news.google.com/rss/search?q=〇〇&hl=ja&gl=JP&ceid=JP:ja"
+
+  - type: rss
+    name: "Yahoo!ニュース"
+    url: "https://news.yahoo.co.jp/rss/search?p=〇〇"
+
+  # RSS がないサイトは html でも取得可能
+  # - type: html
+  #   name: "Example"
+  #   url: "https://example.com/news"
+  #   item_selector: "article"
+  #   title_selector: "h2"
+  #   link_selector: "a"
+
+post_template: |
+  【{topic_name} 定時チェック {run_time_label}】
+  {bullet_summary}
+  {tail_text}
+
+tail_text: "#自動収集 #定時投稿"
