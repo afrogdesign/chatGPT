@@ -1,0 +1,6 @@
+.venv/
+runtime/
+.env
+.setup_done
+__pycache__/
+*.pyc
