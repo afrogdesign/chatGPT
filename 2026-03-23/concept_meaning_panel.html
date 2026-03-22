@@ -1,0 +1,453 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>概念と意味 展示パネル</title>
+  <style>
+    :root {
+      --bg: #f3efe7;
+      --paper: #fbf7f0;
+      --ink: #1e1c18;
+      --muted: #6a6358;
+      --line: #d7ccbc;
+      --blue: #6f8fb8;
+      --green: #7da56d;
+      --rose: #c48693;
+      --gold: #af8c56;
+      --shadow: 0 10px 30px rgba(30, 28, 24, 0.08);
+      --max: 1180px;
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Hiragino Mincho ProN", "Yu Mincho", "Hiragino Sans", "Yu Gothic", serif;
+      color: var(--ink);
+      background:
+        linear-gradient(180deg, rgba(255,255,255,.55), rgba(255,255,255,.2)),
+        var(--bg);
+      line-height: 1.9;
+      letter-spacing: .02em;
+    }
+
+    .wrap { width: min(calc(100% - 32px), var(--max)); margin: 0 auto; }
+
+    header {
+      padding: 36px 0 16px;
+      border-bottom: 1px solid var(--line);
+      background: rgba(251,247,240,.84);
+      backdrop-filter: blur(8px);
+      position: sticky;
+      top: 0;
+      z-index: 20;
+    }
+
+    .topline {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+
+    .titleblock small {
+      display: block;
+      color: var(--muted);
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      font-size: 12px;
+      margin-bottom: 6px;
+      font-family: -apple-system, BlinkMacSystemFont, "Hiragino Sans", "Yu Gothic", sans-serif;
+    }
+
+    .titleblock h1 {
+      margin: 0;
+      font-size: clamp(24px, 3.8vw, 44px);
+      line-height: 1.25;
+      font-weight: 700;
+    }
+
+    nav {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      font-family: -apple-system, BlinkMacSystemFont, "Hiragino Sans", "Yu Gothic", sans-serif;
+    }
+
+    nav a {
+      color: var(--ink);
+      text-decoration: none;
+      padding: 8px 12px;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      background: rgba(255,255,255,.45);
+      font-size: 14px;
+    }
+
+    main { padding: 34px 0 80px; }
+
+    .hero {
+      background: var(--paper);
+      border: 1px solid var(--line);
+      box-shadow: var(--shadow);
+      padding: clamp(22px, 4vw, 46px);
+      margin-bottom: 24px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero::after {
+      content: "";
+      position: absolute;
+      inset: auto -40px -40px auto;
+      width: 280px;
+      height: 280px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(111,143,184,.18), transparent 65%);
+      pointer-events: none;
+    }
+
+    .hero p.lead {
+      font-size: clamp(18px, 2vw, 24px);
+      max-width: 34em;
+      margin: 10px 0 0;
+    }
+
+    .hero p.lead strong { color: var(--rose); }
+
+    .hero-grid,
+    .grid-2,
+    .grid-3 {
+      display: grid;
+      gap: 18px;
+    }
+
+    .hero-grid { grid-template-columns: 1.3fr .9fr; margin-top: 24px; }
+    .grid-2 { grid-template-columns: repeat(2, minmax(0,1fr)); }
+    .grid-3 { grid-template-columns: repeat(3, minmax(0,1fr)); }
+
+    .panel {
+      background: var(--paper);
+      border: 1px solid var(--line);
+      box-shadow: var(--shadow);
+      padding: 22px;
+      margin-bottom: 20px;
+    }
+
+    h2 {
+      margin: 0 0 14px;
+      font-size: clamp(22px, 2.8vw, 34px);
+      line-height: 1.3;
+    }
+
+    h3 {
+      margin: 0 0 10px;
+      font-size: 19px;
+      line-height: 1.4;
+    }
+
+    p { margin: 0 0 12px; }
+    ul { margin: 8px 0 0; padding-left: 1.2em; }
+    li { margin-bottom: 8px; }
+
+    .label {
+      display: inline-block;
+      margin-bottom: 10px;
+      padding: 4px 10px;
+      font-size: 12px;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      color: var(--muted);
+      font-family: -apple-system, BlinkMacSystemFont, "Hiragino Sans", "Yu Gothic", sans-serif;
+    }
+
+    .statement {
+      font-size: clamp(22px, 2.5vw, 34px);
+      line-height: 1.5;
+      padding: 22px;
+      background: linear-gradient(180deg, rgba(255,255,255,.58), rgba(255,255,255,.28));
+      border-left: 5px solid var(--rose);
+    }
+
+    .mini {
+      padding: 18px;
+      border: 1px solid var(--line);
+      background: rgba(255,255,255,.42);
+    }
+
+    .legend {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-top: 10px;
+      font-family: -apple-system, BlinkMacSystemFont, "Hiragino Sans", "Yu Gothic", sans-serif;
+      font-size: 14px;
+      color: var(--muted);
+    }
+
+    .legend span { display: inline-flex; align-items: center; gap: 7px; }
+    .dot { width: 12px; height: 12px; border-radius: 50%; display: inline-block; }
+    .blue { background: var(--blue); }
+    .green { background: var(--green); }
+    .rose { background: var(--rose); }
+    .gold { background: var(--gold); }
+
+    .flow {
+      display: grid;
+      grid-template-columns: repeat(9, auto);
+      gap: 10px;
+      justify-content: start;
+      align-items: stretch;
+      overflow: auto;
+      padding-bottom: 6px;
+    }
+
+    .box {
+      min-width: 165px;
+      max-width: 220px;
+      padding: 16px 14px;
+      border: 1px solid var(--line);
+      background: #fffdf9;
+    }
+
+    .box strong { display: block; margin-bottom: 6px; font-size: 18px; }
+    .box small { color: var(--muted); display: block; line-height: 1.7; }
+    .box.word { border-top: 5px solid var(--blue); }
+    .box.def { border-top: 5px solid var(--gold); }
+    .box.concept { border-top: 5px solid var(--green); }
+    .box.meaning { border-top: 5px solid var(--rose); }
+    .box.exp { border-top: 5px solid #8f8a81; }
+
+    .arrow {
+      display: grid;
+      place-items: center;
+      font-size: 24px;
+      color: var(--muted);
+      min-width: 34px;
+    }
+
+    .comparison {
+      width: 100%;
+      border-collapse: collapse;
+      font-family: -apple-system, BlinkMacSystemFont, "Hiragino Sans", "Yu Gothic", sans-serif;
+      font-size: 15px;
+      background: #fffdf9;
+    }
+
+    .comparison th,
+    .comparison td {
+      border: 1px solid var(--line);
+      padding: 14px;
+      vertical-align: top;
+      text-align: left;
+    }
+
+    .comparison th { background: rgba(255,255,255,.6); }
+
+    .steps {
+      display: grid;
+      gap: 12px;
+    }
+
+    .step {
+      display: grid;
+      grid-template-columns: 44px 1fr;
+      gap: 14px;
+      padding: 14px 16px;
+      border: 1px solid var(--line);
+      background: rgba(255,255,255,.42);
+    }
+
+    .num {
+      width: 44px;
+      height: 44px;
+      display: grid;
+      place-items: center;
+      border-radius: 50%;
+      background: #fffdf9;
+      border: 1px solid var(--line);
+      font-weight: 700;
+      font-family: -apple-system, BlinkMacSystemFont, "Hiragino Sans", "Yu Gothic", sans-serif;
+    }
+
+    footer {
+      padding: 16px 0 40px;
+      color: var(--muted);
+      font-size: 14px;
+      font-family: -apple-system, BlinkMacSystemFont, "Hiragino Sans", "Yu Gothic", sans-serif;
+    }
+
+    @media (max-width: 980px) {
+      .hero-grid, .grid-2, .grid-3 { grid-template-columns: 1fr; }
+      .flow { grid-template-columns: 1fr; }
+      .arrow { transform: rotate(90deg); min-height: 30px; }
+      header { position: static; }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="wrap topline">
+      <div class="titleblock">
+        <small>Exhibition Panel</small>
+        <h1>概念と意味の関係図</h1>
+      </div>
+      <nav>
+        <a href="#intro">導入</a>
+        <a href="#route">言葉から意味へ</a>
+        <a href="#concept">概念とは</a>
+        <a href="#table">比較表</a>
+        <a href="#depth">深淵</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <section id="intro" class="hero">
+      <div class="label">Panel 01 / 導入</div>
+      <h2>辞書に載っているのは、意味そのものではない。</h2>
+      <p class="lead">そこにあるのは、<strong>意味への入口としての言い換え</strong>である。<br>そして、その言い換えの網を支えている見えない枠が「概念」である。</p>
+      <div class="hero-grid">
+        <div class="statement">
+          概念を本気で考えると、言葉の背後にある分類の形式が見えてくる。<br>
+          すると今度は、<strong>意味はどこにあるのか</strong>という問いから逃げられなくなる。
+        </div>
+        <div class="mini">
+          <h3>このパネルの主張</h3>
+          <ul>
+            <li>言葉はラベルにすぎない</li>
+            <li>定義は言い換えである</li>
+            <li>概念は切り分ける枠である</li>
+            <li>意味は経験と接続したときに立ち上がる</li>
+          </ul>
+        </div>
+      </div>
+      <div class="legend">
+        <span><i class="dot blue"></i>言葉</span>
+        <span><i class="dot gold"></i>定義</span>
+        <span><i class="dot green"></i>概念</span>
+        <span><i class="dot rose"></i>意味</span>
+      </div>
+    </section>
+
+    <section id="route" class="panel">
+      <div class="label">Panel 02 / 構造</div>
+      <h2>言葉から意味へ</h2>
+      <div class="flow">
+        <div class="box word"><strong>言葉</strong><small>音・文字・名前札。<br>例：「木」「痛い」「愛」</small></div>
+        <div class="arrow">→</div>
+        <div class="box def"><strong>定義</strong><small>別の言葉で説明する。<br>辞書・Wikiの主な仕事。</small></div>
+        <div class="arrow">→</div>
+        <div class="box concept"><strong>概念</strong><small>何を同じ種類と見なすかを決める枠。<br>見えないが、ずっと働いている。</small></div>
+        <div class="arrow">→</div>
+        <div class="box exp"><strong>経験・文脈</strong><small>身体・記憶・相手・場面・使用。<br>ここで語は厚みを持つ。</small></div>
+        <div class="arrow">→</div>
+        <div class="box meaning"><strong>意味</strong><small>生きた理解として立ち上がるもの。<br>言葉だけの内部には閉じていない。</small></div>
+      </div>
+    </section>
+
+    <section class="grid-2">
+      <div id="concept" class="panel">
+        <div class="label">Panel 03 / 概念</div>
+        <h2>概念とは何か</h2>
+        <p><strong>概念 = 世界を「これとして」切り分けるための枠。</strong></p>
+        <p>目の前には形も色も違う無数の個体がある。にもかかわらず、私たちはそれらを「木」「犬」「机」とまとめて捉える。そのまとめ方を可能にしているのが概念である。</p>
+        <ul>
+          <li>単語そのものではない</li>
+          <li>分類の基準に近い</li>
+          <li>認識の道具であり、同時に認識の限界でもある</li>
+        </ul>
+      </div>
+      <div class="panel">
+        <div class="label">Panel 04 / 例</div>
+        <h2>「痛い」で考える</h2>
+        <p>辞書には「身体の一部に不快な刺激を感じること」と書ける。だがそれだけでは薄い。</p>
+        <ul>
+          <li>怪我した経験</li>
+          <li>誰かの顔の歪み</li>
+          <li>緊急の声色</li>
+          <li>過去の記憶</li>
+        </ul>
+        <p>これらが接続されたとき、「痛い」は単なる文字列ではなく、意味になる。</p>
+      </div>
+    </section>
+
+    <section id="table" class="panel">
+      <div class="label">Panel 05 / 比較</div>
+      <h2>5つの語の違い</h2>
+      <table class="comparison">
+        <thead>
+          <tr>
+            <th>語</th>
+            <th>役割</th>
+            <th>たとえ</th>
+            <th>限界</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <th>言葉</th>
+            <td>対象に貼られたラベル</td>
+            <td>名前札</td>
+            <td>中身は保証しない</td>
+          </tr>
+          <tr>
+            <th>定義</th>
+            <td>別の言葉で説明する</td>
+            <td>説明書</td>
+            <td>常に別の言葉に依存する</td>
+          </tr>
+          <tr>
+            <th>概念</th>
+            <td>分類の枠をつくる</td>
+            <td>型・フレーム</td>
+            <td>見えにくい</td>
+          </tr>
+          <tr>
+            <th>意味</th>
+            <td>言葉が現実と接続したときの理解</td>
+            <td>働き・運動</td>
+            <td>単なる定義では掴みきれない</td>
+          </tr>
+          <tr>
+            <th>本質</th>
+            <td>そのものをそのものたらしめる核</td>
+            <td>芯</td>
+            <td>しばしば論争になる</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section id="depth" class="grid-2">
+      <div class="panel">
+        <div class="label">Panel 06 / なぜ深いのか</div>
+        <h2>深淵の入口</h2>
+        <div class="steps">
+          <div class="step"><div class="num">1</div><div>言葉を調べると、別の言葉に出会う。</div></div>
+          <div class="step"><div class="num">2</div><div>意味は言い換えの網だけでは完結しないと気づく。</div></div>
+          <div class="step"><div class="num">3</div><div>概念・経験・文脈・身体が必要だと分かる。</div></div>
+          <div class="step"><div class="num">4</div><div>理解とは何か、という問いが立ち上がる。</div></div>
+          <div class="step"><div class="num">5</div><div>そこから自己・意識・存在・時間の問題へ接続していく。</div></div>
+        </div>
+      </div>
+      <div class="panel">
+        <div class="label">Panel 07 / 一文要約</div>
+        <h2>最後に残る文</h2>
+        <div class="statement">
+          概念とは、<strong>意味が立ち上がるための見えない形式</strong>である。<br><br>
+          意味とは、<strong>言葉が世界・経験・他者と接続したときに生じる運動</strong>である。
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="wrap">concept_meaning_panel.html / exhibition-style explainer</div>
+  </footer>
+</body>
+</html>
