@@ -1,0 +1,689 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>概念・意味・定義・経験の関係図</title>
+  <style>
+    :root {
+      --bg: #0f1115;
+      --panel: #171a21;
+      --panel-2: #1f2430;
+      --text: #eef2f7;
+      --muted: #a9b4c2;
+      --line: #2c3444;
+      --accent: #8cc8ff;
+      --accent-2: #b3ffcf;
+      --warn: #ffd98c;
+      --pink: #ffbfdc;
+      --shadow: 0 16px 40px rgba(0,0,0,.28);
+      --radius: 18px;
+      --max: 1200px;
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Hiragino Sans", "Yu Gothic", "Noto Sans JP", sans-serif;
+      background:
+        radial-gradient(circle at top right, rgba(140,200,255,.12), transparent 28%),
+        radial-gradient(circle at top left, rgba(179,255,207,.08), transparent 25%),
+        var(--bg);
+      color: var(--text);
+      line-height: 1.8;
+      letter-spacing: .01em;
+    }
+
+    a { color: var(--accent); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+
+    .wrap {
+      width: min(calc(100% - 32px), var(--max));
+      margin: 0 auto;
+    }
+
+    header {
+      padding: 56px 0 24px;
+    }
+
+    .hero {
+      background: linear-gradient(180deg, rgba(255,255,255,.02), rgba(255,255,255,.01));
+      border: 1px solid var(--line);
+      border-radius: 24px;
+      padding: 32px;
+      box-shadow: var(--shadow);
+    }
+
+    .eyebrow {
+      display: inline-block;
+      padding: 6px 10px;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      color: var(--muted);
+      font-size: 12px;
+      margin-bottom: 14px;
+      background: rgba(255,255,255,.02);
+    }
+
+    h1, h2, h3 {
+      margin: 0 0 12px;
+      line-height: 1.35;
+    }
+
+    h1 {
+      font-size: clamp(30px, 4vw, 48px);
+      letter-spacing: .02em;
+    }
+
+    h2 {
+      font-size: clamp(24px, 2.4vw, 34px);
+      margin-top: 44px;
+    }
+
+    h3 {
+      font-size: 20px;
+      margin-top: 28px;
+    }
+
+    p { margin: 0 0 14px; }
+
+    .lead {
+      font-size: clamp(16px, 1.7vw, 20px);
+      color: #dfe7f0;
+      max-width: 60em;
+    }
+
+    .toc {
+      margin-top: 22px;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 12px;
+    }
+
+    .toc a,
+    .card,
+    .diagram,
+    .quote,
+    .mini {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+    }
+
+    .toc a {
+      padding: 16px 18px;
+      color: var(--text);
+      display: block;
+    }
+
+    main {
+      padding-bottom: 80px;
+    }
+
+    section {
+      margin-top: 28px;
+    }
+
+    .grid-2 {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 18px;
+    }
+
+    .grid-3 {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 16px;
+    }
+
+    .card {
+      padding: 22px;
+    }
+
+    .card strong.badge {
+      display: inline-block;
+      margin-bottom: 10px;
+      padding: 4px 10px;
+      border-radius: 999px;
+      font-size: 12px;
+      color: #0e1622;
+      background: var(--accent);
+    }
+
+    .muted { color: var(--muted); }
+
+    ul {
+      margin: 10px 0 0 0;
+      padding-left: 1.2em;
+    }
+
+    li { margin-bottom: 8px; }
+
+    .diagram {
+      padding: 22px;
+      overflow: auto;
+    }
+
+    .flow {
+      display: grid;
+      gap: 14px;
+      align-items: center;
+    }
+
+    .flow.horizontal {
+      grid-template-columns: repeat(9, auto);
+      justify-content: start;
+    }
+
+    .node {
+      min-width: 152px;
+      max-width: 220px;
+      padding: 16px 14px;
+      border-radius: 16px;
+      border: 1px solid var(--line);
+      background: var(--panel-2);
+      box-shadow: inset 0 1px 0 rgba(255,255,255,.03);
+    }
+
+    .node .t {
+      font-weight: 700;
+      display: block;
+      margin-bottom: 6px;
+    }
+
+    .node .s {
+      color: var(--muted);
+      font-size: 14px;
+      line-height: 1.6;
+    }
+
+    .node.word { border-color: rgba(140,200,255,.5); }
+    .node.def { border-color: rgba(255,217,140,.5); }
+    .node.concept { border-color: rgba(179,255,207,.45); }
+    .node.meaning { border-color: rgba(255,191,220,.45); }
+    .node.exp { border-color: rgba(255,255,255,.18); }
+
+    .arrow {
+      color: var(--muted);
+      font-size: 24px;
+      text-align: center;
+      padding: 0 4px;
+    }
+
+    .quote {
+      padding: 22px;
+      border-left: 4px solid var(--accent);
+    }
+
+    .quote p:last-child { margin-bottom: 0; }
+
+    .matrix {
+      width: 100%;
+      border-collapse: collapse;
+      overflow: hidden;
+      border-radius: 18px;
+      border: 1px solid var(--line);
+      background: var(--panel);
+      box-shadow: var(--shadow);
+    }
+
+    .matrix th,
+    .matrix td {
+      border-bottom: 1px solid var(--line);
+      border-right: 1px solid var(--line);
+      padding: 14px 16px;
+      vertical-align: top;
+      text-align: left;
+    }
+
+    .matrix th {
+      background: rgba(255,255,255,.03);
+    }
+
+    .matrix tr:last-child td,
+    .matrix tr:last-child th { border-bottom: 0; }
+    .matrix td:last-child,
+    .matrix th:last-child { border-right: 0; }
+
+    .stack {
+      display: grid;
+      gap: 12px;
+    }
+
+    .mini {
+      padding: 16px;
+    }
+
+    .pill {
+      display: inline-block;
+      padding: 3px 8px;
+      border-radius: 999px;
+      background: rgba(255,255,255,.06);
+      color: var(--muted);
+      font-size: 12px;
+      margin-bottom: 8px;
+    }
+
+    .logic {
+      display: grid;
+      gap: 12px;
+      margin-top: 10px;
+    }
+
+    .logic .step {
+      display: grid;
+      grid-template-columns: 44px 1fr;
+      gap: 12px;
+      align-items: start;
+      padding: 14px 16px;
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      background: var(--panel);
+    }
+
+    .logic .n {
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      background: var(--panel-2);
+      border: 1px solid var(--line);
+      font-weight: 700;
+    }
+
+    footer {
+      padding: 24px 0 60px;
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    code {
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      font-size: .95em;
+      background: rgba(255,255,255,.06);
+      padding: .15em .45em;
+      border-radius: 8px;
+    }
+
+    @media (max-width: 920px) {
+      .grid-2, .grid-3 {
+        grid-template-columns: 1fr;
+      }
+
+      .flow.horizontal {
+        grid-template-columns: 1fr;
+      }
+
+      .arrow {
+        transform: rotate(90deg);
+      }
+
+      .node {
+        max-width: unset;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="wrap">
+      <div class="hero">
+        <div class="eyebrow">哲学・言語・認識の基礎図解</div>
+        <h1>「概念」とは何か。<br>なぜそこから「意味」の深淵に落ちるのか。</h1>
+        <p class="lead">
+          このページは、あなたが掴みかけている核心――<strong>「辞書にあるのは意味そのものではなく、言い換えの網である」</strong>という直感――を、
+          なるべく厳密に、しかし見える形で整理したものです。
+        </p>
+        <div class="toc">
+          <a href="#core">まず結論</a>
+          <a href="#why">なぜ辞書では届かないのか</a>
+          <a href="#concept">概念とは何か</a>
+          <a href="#meaning">意味はどこで生まれるのか</a>
+          <a href="#map">5語の関係図</a>
+          <a href="#deep">深淵の入口</a>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <section id="core">
+      <h2>まず結論</h2>
+      <div class="grid-2">
+        <div class="card">
+          <strong class="badge">結論 1</strong>
+          <p><strong>辞書やWikiが与えるのは、「意味そのもの」ではなく、意味への導線です。</strong></p>
+          <p class="muted">
+            そこに書かれているのは別の言葉による説明です。つまり、意味の現物ではなく、意味へ向かうための案内文です。
+          </p>
+        </div>
+        <div class="card">
+          <strong class="badge">結論 2</strong>
+          <p><strong>概念とは、世界を切り分けるための見えない枠です。</strong></p>
+          <p class="muted">
+            私たちは普段、概念を使って対象を分類し、理解し、比較しています。しかしその枠自体は見えにくいので、理解が難しいのです。
+          </p>
+        </div>
+        <div class="card">
+          <strong class="badge">結論 3</strong>
+          <p><strong>意味は、言葉だけの内部にはありません。</strong></p>
+          <p class="muted">
+            意味は、言葉・概念・文脈・経験・身体・他者との関係が接続されたときに立ち上がります。
+          </p>
+        </div>
+        <div class="card">
+          <strong class="badge">結論 4</strong>
+          <p><strong>だから「概念」を本気で考えると、必ず「意味とは何か」に突き当たります。</strong></p>
+          <p class="muted">
+            概念は、意味を支える形式だからです。概念を理解しようとすると、意味の成立条件そのものを問うことになります。
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <section id="why">
+      <h2>なぜ辞書では「意味そのもの」に届かないのか</h2>
+      <div class="diagram">
+        <div class="flow horizontal" aria-label="辞書の言い換え連鎖">
+          <div class="node word">
+            <span class="t">言葉 A</span>
+            <span class="s">たとえば「概念」</span>
+          </div>
+          <div class="arrow">→</div>
+          <div class="node def">
+            <span class="t">定義 1</span>
+            <span class="s">別の言葉で説明する</span>
+          </div>
+          <div class="arrow">→</div>
+          <div class="node def">
+            <span class="t">定義 2</span>
+            <span class="s">さらに別の言葉で言い換える</span>
+          </div>
+          <div class="arrow">→</div>
+          <div class="node def">
+            <span class="t">定義 3</span>
+            <span class="s">まだ言葉の網の中にいる</span>
+          </div>
+          <div class="arrow">→</div>
+          <div class="node meaning">
+            <span class="t">問い</span>
+            <span class="s">「意味そのもの」はどこにあるのか？</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="grid-2">
+        <div class="card">
+          <h3>ポイント</h3>
+          <ul>
+            <li>辞書は「その言葉を別の言葉でどう説明するか」を示す。</li>
+            <li>つまり辞書は、意味の<strong>代理表現</strong>を渡している。</li>
+            <li>説明は便利だが、説明だけで意味の現場に着地するわけではない。</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h3>重要な誤解</h3>
+          <p>
+            「辞書に意味が載っている」と思いがちですが、厳密には少し違います。<br>
+            辞書に載っているのは、<strong>その言葉がどう使われ、何に近く、何と区別されるか</strong>という整理です。
+          </p>
+        </div>
+      </div>
+
+      <div class="quote">
+        <p><strong>つまり：</strong> 言葉を調べることは大切です。だがそれは「意味の本体を掴むこと」ではなく、<strong>意味に向かう地図を読むこと</strong>です。</p>
+      </div>
+    </section>
+
+    <section id="concept">
+      <h2>概念とは何か</h2>
+      <div class="grid-2">
+        <div class="card">
+          <h3>最も短い定義</h3>
+          <p><strong>概念 = 物事を「これとして」捉えるための頭の中の枠。</strong></p>
+          <p class="muted">
+            それは単なる言葉ではなく、「どこからどこまでを同じものと見なすか」という切り分けの形式です。
+          </p>
+        </div>
+        <div class="card">
+          <h3>なぜ難しいのか</h3>
+          <ul>
+            <li>目に見えない</li>
+            <li>触れられない</li>
+            <li>しかし常に使っている</li>
+            <li>しかも他の言葉の土台になっている</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="diagram">
+        <div class="flow horizontal" aria-label="概念の働き">
+          <div class="node exp">
+            <span class="t">現実</span>
+            <span class="s">木、石、犬、人、痛み、時間…</span>
+          </div>
+          <div class="arrow">→</div>
+          <div class="node concept">
+            <span class="t">概念</span>
+            <span class="s">どれを同じ種類と見るかを決める枠</span>
+          </div>
+          <div class="arrow">→</div>
+          <div class="node word">
+            <span class="t">言葉</span>
+            <span class="s">「木」「犬」「時間」などのラベル</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>たとえば「木」</h3>
+        <ul>
+          <li>目の前には、形も色も大きさも違う無数の個体がある。</li>
+          <li>それらを「同じく木と呼べる」とまとめる働きが概念。</li>
+          <li>「木」という単語は、その概念に貼られたラベル。</li>
+        </ul>
+        <p class="muted">
+          つまり、言葉より一段奥に概念がある。だから「概念」が難しいのです。
+        </p>
+      </div>
+    </section>
+
+    <section id="meaning">
+      <h2>意味はどこで生まれるのか</h2>
+      <div class="diagram">
+        <div class="flow horizontal" aria-label="意味の成立">
+          <div class="node word">
+            <span class="t">言葉</span>
+            <span class="s">ラベル、音、文字</span>
+          </div>
+          <div class="arrow">＋</div>
+          <div class="node concept">
+            <span class="t">概念</span>
+            <span class="s">切り分ける枠</span>
+          </div>
+          <div class="arrow">＋</div>
+          <div class="node exp">
+            <span class="t">経験</span>
+            <span class="s">身体、記憶、場面、使用</span>
+          </div>
+          <div class="arrow">＋</div>
+          <div class="node exp">
+            <span class="t">文脈</span>
+            <span class="s">相手、状況、目的、関係</span>
+          </div>
+          <div class="arrow">＝</div>
+          <div class="node meaning">
+            <span class="t">意味</span>
+            <span class="s">生きた理解として立ち上がるもの</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="grid-2">
+        <div class="card">
+          <h3>例：「痛い」</h3>
+          <p>
+            辞書的には「身体のある部分に不快な刺激を感じること」と書けます。<br>
+            しかし、それだけでは「痛い」の意味はまだ薄い。
+          </p>
+          <ul>
+            <li>実際に怪我をした経験</li>
+            <li>他人が顔をしかめる様子</li>
+            <li>声の調子</li>
+            <li>どんな状況で発せられたか</li>
+          </ul>
+          <p class="muted">これらが結びついて、初めて「痛い」が厚みを持つ。</p>
+        </div>
+        <div class="card">
+          <h3>重要な整理</h3>
+          <p>
+            「意味は言葉のロジックではまったく届かない」と言いたくなる感覚はよく分かります。<br>
+            ただ、厳密にはこう言う方が精密です。
+          </p>
+          <div class="mini">
+            <p><strong>意味は、言葉だけでは完結しない。</strong><br>
+            だが、言葉を含む複合的な営みの中で立ち上がる。</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="map">
+      <h2>「言葉・定義・概念・意味・本質」の関係図</h2>
+      <table class="matrix" aria-label="5つの語の比較表">
+        <thead>
+          <tr>
+            <th>語</th>
+            <th>何をしているか</th>
+            <th>たとえ</th>
+            <th>限界</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <th>言葉</th>
+            <td>対象に貼るラベル。音や文字の形。</td>
+            <td>名前札</td>
+            <td>ラベルだけでは中身は分からない</td>
+          </tr>
+          <tr>
+            <th>定義</th>
+            <td>その言葉を別の言葉で説明する。</td>
+            <td>説明書</td>
+            <td>説明は常に別の言葉に依存する</td>
+          </tr>
+          <tr>
+            <th>概念</th>
+            <td>何を同じ種類とみなすかを決める枠。</td>
+            <td>型・分類フレーム</td>
+            <td>枠そのものは見えにくい</td>
+          </tr>
+          <tr>
+            <th>意味</th>
+            <td>言葉と世界・経験・文脈が接続されたときに成立する理解。</td>
+            <td>生きた働き</td>
+            <td>単純な言い換えでは掴みきれない</td>
+          </tr>
+          <tr>
+            <th>本質</th>
+            <td>そのものをそのものたらしめている核心を問う。</td>
+            <td>核・芯</td>
+            <td>どこまでが本質かはしばしば論争になる</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="grid-3" style="margin-top:16px;">
+        <div class="mini">
+          <div class="pill">要点</div>
+          <p><strong>言葉</strong>は表面。</p>
+        </div>
+        <div class="mini">
+          <div class="pill">要点</div>
+          <p><strong>概念</strong>はその奥の枠。</p>
+        </div>
+        <div class="mini">
+          <div class="pill">要点</div>
+          <p><strong>意味</strong>は、枠が現実の中で働いたときに立つ。</p>
+        </div>
+      </div>
+    </section>
+
+    <section id="deep">
+      <h2>なぜここから「深淵」が始まるのか</h2>
+      <div class="logic">
+        <div class="step">
+          <div class="n">1</div>
+          <div>
+            <strong>言葉を調べる。</strong><br>
+            しかし出てくるのは別の言葉による説明である。
+          </div>
+        </div>
+        <div class="step">
+          <div class="n">2</div>
+          <div>
+            <strong>すると、意味は辞書の内部に閉じていない</strong>と分かる。
+          </div>
+        </div>
+        <div class="step">
+          <div class="n">3</div>
+          <div>
+            <strong>では何が意味を支えているのか</strong>と問うと、概念・経験・文脈・使用・身体に行き着く。
+          </div>
+        </div>
+        <div class="step">
+          <div class="n">4</div>
+          <div>
+            <strong>ここで初めて「理解とは何か」</strong>が問題になる。<br>
+            定義を言えることが理解なのか。使えることが理解なのか。感じ取れることが理解なのか。
+          </div>
+        </div>
+        <div class="step">
+          <div class="n">5</div>
+          <div>
+            <strong>この問いは、意味だけでなく存在・自己・意識・時間にも接続する。</strong><br>
+            だから「概念」は単なる国語の難語ではなく、哲学の入口になる。
+          </div>
+        </div>
+      </div>
+
+      <div class="quote" style="margin-top:18px;">
+        <p><strong>一文で言うなら：</strong></p>
+        <p><strong>概念とは、意味が立ち上がるための見えない形式である。</strong></p>
+        <p><strong>意味とは、言葉が世界・経験・他者と接続したときに生じる運動である。</strong></p>
+      </div>
+    </section>
+
+    <section>
+      <h2>最後の整理</h2>
+      <div class="stack">
+        <div class="card">
+          <p>あなたが感じている難しさは、単に「言葉が難しい」からではありません。</p>
+          <p>
+            <strong>「概念」を考えることは、言葉の背後にある分類の形式を問うこと</strong>であり、<br>
+            <strong>「意味」を考えることは、その形式が現実や経験の中でどう生きるかを問うこと</strong>だからです。
+          </p>
+        </div>
+        <div class="card">
+          <p>だからこそ、あなたの次の直感はかなり正確です。</p>
+          <ul>
+            <li>辞書だけでは足りない</li>
+            <li>概念を理解しないと意味に近づけない</li>
+            <li>しかし概念を理解すると、言葉の表層性にも気づいてしまう</li>
+            <li>その先で初めて「意味とは何か」の扉が開く</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="wrap">
+      このHTMLは、会話内容をもとに「概念」「意味」「定義」「経験」「本質」の関係を図式化した解説ページです。
+    </div>
+  </footer>
+</body>
+</html>
