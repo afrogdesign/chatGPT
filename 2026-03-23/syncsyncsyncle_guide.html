@@ -1,0 +1,825 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Sync!Sync!Sync!LE 徹底ガイド</title>
+<style>
+  :root {
+    --bg: #0f1220;
+    --panel: #171b2e;
+    --panel-2: #1f2540;
+    --text: #eef2ff;
+    --muted: #b8c1e0;
+    --line: #33406e;
+    --accent: #6dd3ff;
+    --accent-2: #8dffb3;
+    --warn: #ffd36d;
+    --danger: #ff8f8f;
+    --shadow: 0 18px 48px rgba(0,0,0,.35);
+    --radius: 18px;
+  }
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    margin: 0;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Hiragino Sans", "Noto Sans JP", sans-serif;
+    line-height: 1.75;
+    color: var(--text);
+    background:
+      radial-gradient(1100px 700px at 85% -10%, rgba(109,211,255,.16), transparent 60%),
+      radial-gradient(900px 600px at -10% 0%, rgba(141,255,179,.10), transparent 55%),
+      linear-gradient(180deg, #0b0e18 0%, var(--bg) 100%);
+  }
+  a { color: var(--accent); }
+  .wrap {
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 32px 20px 72px;
+  }
+  .hero {
+    background: linear-gradient(135deg, rgba(109,211,255,.10), rgba(141,255,179,.08));
+    border: 1px solid rgba(255,255,255,.08);
+    border-radius: 28px;
+    box-shadow: var(--shadow);
+    overflow: hidden;
+    position: relative;
+  }
+  .hero::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background:
+      linear-gradient(120deg, rgba(255,255,255,.06), transparent 35%),
+      radial-gradient(700px 300px at 90% 10%, rgba(109,211,255,.20), transparent 50%);
+    pointer-events: none;
+  }
+  .hero-inner {
+    padding: 34px 28px 30px;
+    position: relative;
+    z-index: 1;
+  }
+  .eyebrow {
+    display: inline-flex;
+    gap: 8px;
+    align-items: center;
+    padding: 8px 12px;
+    border-radius: 999px;
+    background: rgba(255,255,255,.06);
+    border: 1px solid rgba(255,255,255,.08);
+    color: var(--accent-2);
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: .03em;
+  }
+  h1 {
+    margin: 16px 0 10px;
+    font-size: clamp(32px, 5vw, 54px);
+    line-height: 1.1;
+    letter-spacing: -.02em;
+  }
+  .lead {
+    font-size: 18px;
+    color: var(--muted);
+    max-width: 980px;
+    margin: 0;
+  }
+  .hero-grid {
+    display: grid;
+    grid-template-columns: 1.2fr .8fr;
+    gap: 24px;
+    margin-top: 26px;
+  }
+  .quick-box,
+  .status-box {
+    background: rgba(255,255,255,.045);
+    border: 1px solid rgba(255,255,255,.07);
+    border-radius: 20px;
+    padding: 18px 18px 16px;
+  }
+  .quick-box h2,
+  .status-box h2 {
+    margin: 0 0 10px;
+    font-size: 19px;
+  }
+  .quick-list {
+    margin: 0;
+    padding-left: 1.2em;
+    color: var(--muted);
+  }
+  .quick-list li { margin: 8px 0; }
+  .status-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+  .pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    border-radius: 999px;
+    padding: 8px 12px;
+    font-size: 13px;
+    font-weight: 700;
+    background: rgba(255,255,255,.06);
+    border: 1px solid rgba(255,255,255,.08);
+    margin: 4px 6px 0 0;
+  }
+  .layout {
+    display: grid;
+    grid-template-columns: 280px minmax(0, 1fr);
+    gap: 22px;
+    margin-top: 28px;
+  }
+  .toc {
+    position: sticky;
+    top: 18px;
+    align-self: start;
+    background: rgba(20,24,41,.82);
+    border: 1px solid rgba(255,255,255,.08);
+    backdrop-filter: blur(14px);
+    border-radius: 22px;
+    padding: 18px 16px;
+    box-shadow: var(--shadow);
+  }
+  .toc h2 {
+    margin: 0 0 10px;
+    font-size: 16px;
+    letter-spacing: .02em;
+  }
+  .toc ol {
+    margin: 0;
+    padding-left: 1.1em;
+  }
+  .toc li {
+    margin: 8px 0;
+    color: var(--muted);
+  }
+  .toc a {
+    color: var(--text);
+    text-decoration: none;
+  }
+  .toc a:hover { color: var(--accent); }
+  .main section {
+    background: rgba(22,26,45,.88);
+    border: 1px solid rgba(255,255,255,.08);
+    border-radius: 24px;
+    padding: 26px 24px 22px;
+    margin-bottom: 22px;
+    box-shadow: var(--shadow);
+  }
+  .main h2 {
+    margin-top: 0;
+    font-size: 29px;
+    line-height: 1.2;
+    letter-spacing: -.02em;
+  }
+  .main h3 {
+    margin-top: 28px;
+    font-size: 22px;
+    line-height: 1.35;
+  }
+  .main p,
+  .main li { color: #dfe6ff; }
+  .muted { color: var(--muted); }
+  .note,
+  .warn,
+  .danger {
+    border-radius: 18px;
+    padding: 16px 16px 14px;
+    margin: 18px 0;
+    border: 1px solid transparent;
+  }
+  .note {
+    background: rgba(109,211,255,.10);
+    border-color: rgba(109,211,255,.20);
+  }
+  .warn {
+    background: rgba(255,211,109,.11);
+    border-color: rgba(255,211,109,.24);
+  }
+  .danger {
+    background: rgba(255,143,143,.11);
+    border-color: rgba(255,143,143,.25);
+  }
+  .cards {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 16px;
+    margin-top: 14px;
+  }
+  .card {
+    background: linear-gradient(180deg, rgba(255,255,255,.035), rgba(255,255,255,.02));
+    border: 1px solid rgba(255,255,255,.07);
+    border-radius: 18px;
+    padding: 16px;
+  }
+  .card h4 {
+    margin: 0 0 8px;
+    font-size: 18px;
+  }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 14px 0 8px;
+    font-size: 14px;
+  }
+  th, td {
+    border: 1px solid var(--line);
+    padding: 11px 12px;
+    vertical-align: top;
+  }
+  th {
+    text-align: left;
+    background: rgba(109,211,255,.10);
+    color: #f6fbff;
+  }
+  tr:nth-child(even) td {
+    background: rgba(255,255,255,.02);
+  }
+  .mini {
+    font-size: 13px;
+    color: var(--muted);
+  }
+  .flow {
+    display: grid;
+    gap: 14px;
+    margin-top: 14px;
+  }
+  .flow-step {
+    position: relative;
+    border-radius: 18px;
+    padding: 14px 16px 14px 54px;
+    border: 1px solid rgba(255,255,255,.07);
+    background: rgba(255,255,255,.03);
+  }
+  .flow-step .num {
+    position: absolute;
+    left: 14px;
+    top: 12px;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    display: grid;
+    place-items: center;
+    background: linear-gradient(180deg, var(--accent), #3ca8ff);
+    color: #07111f;
+    font-weight: 800;
+    box-shadow: 0 8px 24px rgba(109,211,255,.25);
+  }
+  .kbd {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 8px;
+    background: rgba(255,255,255,.08);
+    border: 1px solid rgba(255,255,255,.10);
+    font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+    font-size: .95em;
+  }
+  .footer {
+    padding: 18px 4px 0;
+    color: var(--muted);
+    font-size: 13px;
+  }
+  @media (max-width: 1024px) {
+    .hero-grid,
+    .layout,
+    .cards { grid-template-columns: 1fr; }
+    .toc { position: relative; top: 0; }
+  }
+  @media (max-width: 640px) {
+    .wrap { padding: 16px 12px 46px; }
+    .hero-inner { padding: 24px 18px 22px; }
+    .main section { padding: 20px 16px 18px; }
+    h1 { font-size: 34px; }
+    .lead { font-size: 16px; }
+    th, td { padding: 9px 8px; }
+  }
+</style>
+</head>
+<body>
+  <div class="wrap">
+    <header class="hero">
+      <div class="hero-inner">
+        <div class="eyebrow">📁 macOS同期・バックアップ解説 / Sync!Sync!Sync!LE</div>
+        <h1>Sync!Sync!Sync!LE 徹底ガイド</h1>
+        <p class="lead">このページは、<strong>Sync!Sync!Sync!LE 6.2.4</strong> を前提に、特に混乱しやすい <strong>「同期ルール」「各方式で何が起きるか」「バックアップとして安全かどうか」</strong> を中心に、できるだけ実務的に整理した解説です。単なる機能説明ではなく、<strong>事故が起きやすいポイント</strong> を先回りして潰す構成にしています。</p>
+
+        <div class="hero-grid">
+          <div class="quick-box">
+            <h2>最初に結論</h2>
+            <ul class="quick-list">
+              <li><strong>消したくない元データがあるなら、最初から「同期」を選ばない</strong> のが基本です。</li>
+              <li><strong>バックアップ用途なら「追加コピー」または「アップデート」系が安全寄り</strong> です。</li>
+              <li><strong>双方向同期は便利ですが、履歴管理や競合理解なしで使うと危険</strong> です。</li>
+              <li>LE版は無料で使いやすい一方、<strong>一部制限</strong> と <strong>将来互換性への不透明さ</strong> があります。</li>
+            </ul>
+          </div>
+          <div class="status-box">
+            <h2>このガイドで特に重視していること</h2>
+            <div class="status-grid">
+              <div>
+                <span class="pill">🧭 モードの違いを明確化</span>
+                <span class="pill">🛡 安全な運用順を提示</span>
+                <span class="pill">📊 できる / できないを表で整理</span>
+                <span class="pill">⚠ 削除・上書き事故を防ぐ</span>
+                <span class="pill">🧩 自動実行や除外設定も補足</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <div class="layout">
+      <aside class="toc">
+        <h2>目次</h2>
+        <ol>
+          <li><a href="#overview">このソフトは何をするものか</a></li>
+          <li><a href="#versions">LE版の立ち位置と最新状況</a></li>
+          <li><a href="#modes">同期方式の全体像</a></li>
+          <li><a href="#matrix">方式ごとの できる / できない 一覧表</a></li>
+          <li><a href="#rules">ファイル同期ルールの考え方</a></li>
+          <li><a href="#safe-use">安全な使い方</a></li>
+          <li><a href="#examples">用途別おすすめ設定</a></li>
+          <li><a href="#automation">自動実行・除外・世代管理</a></li>
+          <li><a href="#trouble">よくある事故と対策</a></li>
+          <li><a href="#summary">最終まとめ</a></li>
+        </ol>
+      </aside>
+
+      <main class="main">
+        <section id="overview">
+          <h2>1. このソフトは何をするものか</h2>
+          <p><strong>Sync!Sync!Sync!</strong> は、指定した 2 つのフォルダを比較して、片方から片方へコピーしたり、差分だけ更新したり、双方向で内容を揃えたりするための macOS 用ユーティリティです。言い換えると、<strong>「Finder で手作業でやるファイル整理を、ルール付きで自動化するソフト」</strong> です。</p>
+          <div class="cards">
+            <div class="card">
+              <h4>向いていること</h4>
+              <ul>
+                <li>外付けSSDへの日常バックアップ</li>
+                <li>作業フォルダの差分更新</li>
+                <li>2台のMac間で一部フォルダの内容を揃える</li>
+                <li>更新分だけコピーして時間短縮する</li>
+              </ul>
+            </div>
+            <div class="card">
+              <h4>勘違いしやすい点</h4>
+              <ul>
+                <li>「同期」= 常に安全なバックアップ、ではありません</li>
+                <li>削除や上書きも同期対象になることがあります</li>
+                <li>モード次第で、古いファイルが消えることがあります</li>
+                <li>双方向では、どちらが正なのか曖昧になりやすいです</li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="warn">
+            <strong>重要：</strong> Sync 系ソフトは <strong>「ファイルを守るソフト」ではなく、「ルールどおりに揃えるソフト」</strong> です。したがって、ルール設定を誤ると、意図どおりに壊れます。ここが Time Machine のような「まず保護」が思想の中心にあるバックアップと大きく違うところです。
+          </div>
+        </section>
+
+        <section id="versions">
+          <h2>2. LE版の立ち位置と最新状況</h2>
+          <p>今回の対象は <strong>Sync!Sync!Sync!LE 6.2.4</strong> です。公式配布ページ側では 6.2.4 表記と、後継系と思われる <strong>Sync4 beta への言及</strong> が確認できます。ただし、実際の運用現場では <strong>「長年更新されていない定番ツールとして使われ続けている」</strong> というニュアンスが強いです。</p>
+
+          <table>
+            <thead>
+              <tr>
+                <th>項目</th>
+                <th>状況</th>
+                <th>実務上の見方</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>現在確認できる版</td>
+                <td>6.2.4</td>
+                <td>現行利用者の目線では、事実上この版が定番</td>
+              </tr>
+              <tr>
+                <td>公式の新展開</td>
+                <td>Sync4 beta への導線あり</td>
+                <td>将来の主流候補だが、安定版として定着したとは言い切れない</td>
+              </tr>
+              <tr>
+                <td>Apple Silicon / 新しい macOS</td>
+                <td>個人レベルでは動作報告あり</td>
+                <td>公式に広く保証されている印象ではないため、環境更新前に必ずテスト推奨</td>
+              </tr>
+              <tr>
+                <td>LE版の性格</td>
+                <td>無料寄り・簡易版</td>
+                <td>まず使うには十分だが、全機能版との差や将来保守は意識した方がよい</td>
+              </tr>
+            </tbody>
+          </table>
+
+          <div class="note">
+            <strong>実務的な理解：</strong> いまでも使えるケースは多いですが、<strong>「最新のmacOSでも永続的に安心」までは言えません</strong>。大切な運用では、OSアップデート直後に本番投入せず、まずテストフォルダで差分確認してから使うのが安全です。
+          </div>
+        </section>
+
+        <section id="modes">
+          <h2>3. 同期方式の全体像</h2>
+          <p>このソフトがわかりにくい最大の理由は、<strong>「どちら向きに」「何を基準に」「削除も反映するのか」</strong> がモードによって大きく違うことです。そこでまず、発想で分けます。</p>
+
+          <div class="cards">
+            <div class="card">
+              <h4>① 追加型</h4>
+              <p>元にあるファイルを、先にない場所へ足していく考え方。<strong>既存データを壊しにくい</strong>。</p>
+            </div>
+            <div class="card">
+              <h4>② 更新型</h4>
+              <p>新しいもの / 変わったものだけ置き換える考え方。<strong>効率が良いが、上書きが起こる</strong>。</p>
+            </div>
+            <div class="card">
+              <h4>③ 鏡合わせ型</h4>
+              <p>片方を基準に、もう片方を<strong>同じ状態に揃える</strong>考え方。削除も反映しやすい。</p>
+            </div>
+            <div class="card">
+              <h4>④ 双方向型</h4>
+              <p>両方の変更を見て、互いに反映する考え方。便利だが、<strong>競合・削除伝播の理解が必要</strong>。</p>
+            </div>
+          </div>
+
+          <h3>代表的な理解のしかた</h3>
+          <table>
+            <thead>
+              <tr>
+                <th>方式イメージ</th>
+                <th>ざっくり意味</th>
+                <th>バックアップ向きか</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>追加コピー</td>
+                <td>ないものだけ足す</td>
+                <td>◎ 安全寄り</td>
+              </tr>
+              <tr>
+                <td>アップデート</td>
+                <td>新しいものだけ上書き更新する</td>
+                <td>○ 条件つきで使いやすい</td>
+              </tr>
+              <tr>
+                <td>同期（片方向ミラー系）</td>
+                <td>元を基準に先を同じ状態へ寄せる</td>
+                <td>△ バックアップというより複製・反映</td>
+              </tr>
+              <tr>
+                <td>双方向同期</td>
+                <td>双方の差分を統合する</td>
+                <td>△〜× 慣れていないと危険</td>
+              </tr>
+            </tbody>
+          </table>
+        </section>
+
+        <section id="matrix">
+          <h2>4. 方式ごとの できる / できない 一覧表</h2>
+          <p>ここが一番重要です。実際の名称は表示言語やバージョン差で多少違って見えることがありますが、挙動としては次の理解でほぼ整理できます。</p>
+
+          <table>
+            <thead>
+              <tr>
+                <th>方式</th>
+                <th>先にないファイルをコピー</th>
+                <th>先にある古いファイルを更新</th>
+                <th>先にしかない余分なファイルを消す</th>
+                <th>元で削除したことを反映</th>
+                <th>双方向で取り込む</th>
+                <th>初心者向け安全度</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>追加コピー</strong></td>
+                <td>○</td>
+                <td>× または限定的</td>
+                <td>×</td>
+                <td>×</td>
+                <td>×</td>
+                <td>◎</td>
+              </tr>
+              <tr>
+                <td><strong>アップデート</strong></td>
+                <td>○</td>
+                <td>○</td>
+                <td>×</td>
+                <td>×</td>
+                <td>×</td>
+                <td>○</td>
+              </tr>
+              <tr>
+                <td><strong>片方向同期 / ミラー</strong></td>
+                <td>○</td>
+                <td>○</td>
+                <td>○ のことがある</td>
+                <td>○ のことが多い</td>
+                <td>×</td>
+                <td>△</td>
+              </tr>
+              <tr>
+                <td><strong>双方向同期</strong></td>
+                <td>○</td>
+                <td>○</td>
+                <td>条件次第</td>
+                <td>条件次第で伝播</td>
+                <td>○</td>
+                <td>×</td>
+              </tr>
+            </tbody>
+          </table>
+
+          <h3>超重要な読み替え</h3>
+          <ul>
+            <li><strong>「コピーされる」こと</strong> と <strong>「消されない」こと</strong> は別問題です。</li>
+            <li><strong>「同期」</strong> という言葉がついている方式は、しばしば <strong>削除まで揃える</strong> 発想を含みます。</li>
+            <li><strong>バックアップ目的なら、「削除を伝播しない方式」を優先</strong> した方が事故に強いです。</li>
+          </ul>
+
+          <div class="danger">
+            <strong>事故が起きる典型：</strong> 元フォルダで間違って大量削除 → 「同期」を実行 → バックアップ先でも同じ削除が反映。<br>
+            これはソフトの誤動作ではなく、<strong>設定どおりに正しく動いている事故</strong> です。
+          </div>
+        </section>
+
+        <section id="rules">
+          <h2>5. ファイル同期ルールの考え方</h2>
+          <p>「なぜこのファイルがコピーされたのか / されなかったのか」を理解するには、ソフトが何を比較しているかを押さえる必要があります。一般に Sync!Sync!Sync! 系では、以下のような情報を基準に比較します。</p>
+
+          <table>
+            <thead>
+              <tr>
+                <th>比較要素</th>
+                <th>意味</th>
+                <th>注意点</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>ファイル名・階層</td>
+                <td>同じ場所に同じ名前があるか</td>
+                <td>名前を変えた場合、更新ではなく「別ファイル」と認識されやすい</td>
+              </tr>
+              <tr>
+                <td>更新日時</td>
+                <td>どちらが新しいかの判断材料</td>
+                <td>コピー方法によって日時が変わると、意図せず新旧判定が変わることがある</td>
+              </tr>
+              <tr>
+                <td>サイズ</td>
+                <td>中身が変わった可能性の判断材料</td>
+                <td>同サイズでも中身が違う場合は見抜けないことがある</td>
+              </tr>
+              <tr>
+                <td>削除の有無</td>
+                <td>片方から消えたものをどう扱うか</td>
+                <td>同期系ではここが一番危険</td>
+              </tr>
+            </tbody>
+          </table>
+
+          <h3>ルールを言語化するとこうなる</h3>
+          <div class="flow">
+            <div class="flow-step"><span class="num">1</span><strong>同じパスに同名ファイルがあるか</strong> を見る。</div>
+            <div class="flow-step"><span class="num">2</span>なければ、方式に応じて <strong>新規コピーするか / しないか</strong> を決める。</div>
+            <div class="flow-step"><span class="num">3</span>あれば、更新日時やサイズなどを見て <strong>上書き更新するか / そのままにするか</strong> を決める。</div>
+            <div class="flow-step"><span class="num">4</span>片方にしかないファイルについて、方式が同期系なら <strong>削除・移動・複製の整合</strong> を取る。</div>
+            <div class="flow-step"><span class="num">5</span>除外ルールがある場合、対象から外す。</div>
+          </div>
+
+          <div class="note">
+            <strong>現場での重要点：</strong> Finder でファイル名変更や整理移動をすると、ソフトから見ると「更新」ではなく <strong>削除 + 新規追加</strong> に見えることがあります。このため、ミラー系や双方向系では思わぬ動きが出ることがあります。
+          </div>
+        </section>
+
+        <section id="safe-use">
+          <h2>6. 安全な使い方</h2>
+          <p>初めて使う場合は、次の順で進めるのが安全です。</p>
+
+          <div class="flow">
+            <div class="flow-step"><span class="num">1</span><strong>本番データでいきなり試さない。</strong> まず小さなテストフォルダを 2 つ作り、数個のファイルだけで挙動確認する。</div>
+            <div class="flow-step"><span class="num">2</span><strong>最初は「追加コピー」か「アップデート」から始める。</strong> いきなり同期や双方向を選ばない。</div>
+            <div class="flow-step"><span class="num">3</span><strong>実行前のプレビューや差分表示があるなら必ず確認する。</strong> とくに削除対象の有無を見る。</div>
+            <div class="flow-step"><span class="num">4</span><strong>バックアップ先は、元データと別ディスクにする。</strong> 同一ディスク内コピーだけでは障害対策として弱い。</div>
+            <div class="flow-step"><span class="num">5</span><strong>大事な運用は Time Machine 等と併用する。</strong> Sync 系は履歴保護より状態合わせが得意。</div>
+          </div>
+
+          <h3>安全度の高い運用パターン</h3>
+          <table>
+            <thead>
+              <tr>
+                <th>用途</th>
+                <th>おすすめ</th>
+                <th>理由</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>作品データの避難コピー</td>
+                <td>追加コピー</td>
+                <td>元で消しても先が消えにくい</td>
+              </tr>
+              <tr>
+                <td>作業フォルダの定期更新</td>
+                <td>アップデート</td>
+                <td>新しいものだけ反映できる</td>
+              </tr>
+              <tr>
+                <td>配布用ミラー複製</td>
+                <td>片方向同期</td>
+                <td>元と同じ状態に揃えたい用途に合う</td>
+              </tr>
+              <tr>
+                <td>2台のMacで文書を往復編集</td>
+                <td>双方向同期 + 競合理解</td>
+                <td>便利だが、削除・重複・競合対応が前提</td>
+              </tr>
+            </tbody>
+          </table>
+        </section>
+
+        <section id="examples">
+          <h2>7. 用途別おすすめ設定</h2>
+
+          <h3>ケースA：写真・デザイン・原稿のバックアップ</h3>
+          <p><strong>おすすめ：</strong> 追加コピー もしくは アップデート。<br>
+          <strong>理由：</strong> 間違って元データを消したとき、バックアップ先まで連動削除されにくいからです。</p>
+          <div class="warn">
+            PSD / AI / RAW / WAV など、大きくて重要な元データでは、<strong>「同期」より「蓄積型」寄りの運用</strong> が安全です。
+          </div>
+
+          <h3>ケースB：納品フォルダを常に最新状態に揃えたい</h3>
+          <p><strong>おすすめ：</strong> アップデート または 片方向同期。<br>
+          元フォルダを正本にして、先を常に配布用複製にする運用です。ただし、<strong>先で独自に何か追加すると消える可能性</strong> があるため、先は編集しない方が安全です。</p>
+
+          <h3>ケースC：ノートや資料を2台のMacで往復したい</h3>
+          <p><strong>おすすめ：</strong> 双方向同期。ただし次が条件です。</p>
+          <ul>
+            <li>片方だけを「絶対の正」と思わない</li>
+            <li>同一ファイルを両方で同時編集しない</li>
+            <li>競合時にどちらが残るか、事前にテストする</li>
+            <li>削除反映のルールを理解する</li>
+          </ul>
+
+          <h3>ケースD：外付けSSDに毎晩自動退避したい</h3>
+          <p><strong>おすすめ：</strong> アップデート + 世代バックアップ併用。<br>
+          つまり、普段の差分更新は軽く回しつつ、<strong>別手段で履歴も残す</strong> と堅いです。</p>
+        </section>
+
+        <section id="automation">
+          <h2>8. 自動実行・除外・世代管理</h2>
+
+          <h3>自動実行でできること</h3>
+          <p>Sync!Sync!Sync! 系は AppleScript やスケジュール実行と組み合わせて使われることがあります。これにより、たとえば「毎晩」「マウント時」「ログイン時」の定期同期が可能です。</p>
+
+          <table>
+            <thead>
+              <tr>
+                <th>機能</th>
+                <th>できること</th>
+                <th>注意点</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>手動実行</td>
+                <td>必要時だけ実行</td>
+                <td>最も安全。確認しながら運用できる</td>
+              </tr>
+              <tr>
+                <td>AppleScript連携</td>
+                <td>特定設定を自動で呼び出す</td>
+                <td>設定を誤ると事故も自動化される</td>
+              </tr>
+              <tr>
+                <td>定期スケジュール</td>
+                <td>毎日・毎週などで自動同期</td>
+                <td>接続先ディスクの状態やマウント名ズレに注意</td>
+              </tr>
+            </tbody>
+          </table>
+
+          <h3>除外設定で重要なもの</h3>
+          <ul>
+            <li>キャッシュや一時ファイル</li>
+            <li><span class="kbd">.DS_Store</span> など不要な管理ファイル</li>
+            <li>書き出し途中のテンポラリ</li>
+            <li>アプリが自動生成する索引ファイル</li>
+          </ul>
+
+          <p>除外ルールを適切に設定すると、比較時間が減り、不要な差分反映も減ります。とくにメディア制作では、<strong>本体データとキャッシュを分けて考える</strong> のが重要です。</p>
+
+          <h3>世代管理について</h3>
+          <p>ここは非常に大事です。Sync!Sync!Sync! は基本的に <strong>「現在の状態を揃える」</strong> のが得意で、Time Machine のような <strong>長期履歴保存が主役ではありません</strong>。したがって、次のように考えると安全です。</p>
+
+          <div class="cards">
+            <div class="card">
+              <h4>Sync!Sync!Sync! の得意分野</h4>
+              <ul>
+                <li>いま最新の状態を複製する</li>
+                <li>差分だけ効率よく反映する</li>
+                <li>複数場所の内容を素早く揃える</li>
+              </ul>
+            </div>
+            <div class="card">
+              <h4>別途必要になりやすいもの</h4>
+              <ul>
+                <li>古い版へ戻るための履歴</li>
+                <li>誤削除から日付単位で復元する機能</li>
+                <li>ランサム・破損後の巻き戻し</li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="note">
+            <strong>つまり：</strong> このソフト単体で「万全のバックアップ」を期待するより、<strong>同期・複製担当</strong> として使い、<strong>履歴担当</strong> は Time Machine や世代バックアップに任せるのが堅いです。
+          </div>
+        </section>
+
+        <section id="trouble">
+          <h2>9. よくある事故と対策</h2>
+
+          <h3>事故1：バックアップ先のファイルが消えた</h3>
+          <p><strong>原因：</strong> 同期 / ミラー系で削除反映が有効だった可能性。<br>
+          <strong>対策：</strong> バックアップ目的では追加コピーかアップデートに切り替える。削除を伝播しない設計にする。</p>
+
+          <h3>事故2：なぜか大量の差分が出る</h3>
+          <p><strong>原因：</strong> 更新日時のズレ、別コピーソフト経由での移動、ファイル名変更や階層移動。<br>
+          <strong>対策：</strong> 一度テストフォルダで再現させ、何を差分と判定しているか確認する。</p>
+
+          <h3>事故3：双方向で重複や競合が起きる</h3>
+          <p><strong>原因：</strong> 両方で同じファイルを編集した、または片方で名前変更・片方で更新した。<br>
+          <strong>対策：</strong> 双方向対象を「同時編集しない種類のデータ」に限定する。重要ファイルは片方向運用に寄せる。</p>
+
+          <h3>事故4：自動同期が失敗する / 別ディスク扱いになる</h3>
+          <p><strong>原因：</strong> 外付けディスクのマウント名変化、アクセス権、スリープ復帰後の未接続。<br>
+          <strong>対策：</strong> 自動運用前に、対象ボリューム名とパス固定を確認する。macOS のフルディスクアクセスも見直す。</p>
+
+          <h3>事故5：macOSでアクセスできない</h3>
+          <p>近年の macOS では、<strong>デスクトップ / 書類 / 外部ボリューム / ネットワークドライブ</strong> へのアクセスに権限が必要です。同期ソフトが対象を見られない場合は、システム設定の <strong>プライバシーとセキュリティ</strong> から権限を確認してください。</p>
+
+          <div class="warn">
+            <strong>鉄則：</strong> 自動化するほど、最初の設計ミスの被害は大きくなります。便利さより先に、<strong>削除・上書き・競合がどう起きるか</strong> を把握しておくべきです。
+          </div>
+        </section>
+
+        <section id="summary">
+          <h2>10. 最終まとめ</h2>
+
+          <table>
+            <thead>
+              <tr>
+                <th>やりたいこと</th>
+                <th>選ぶべき方向</th>
+                <th>避けたい方向</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>とにかく安全に退避したい</td>
+                <td>追加コピー</td>
+                <td>削除反映のある同期</td>
+              </tr>
+              <tr>
+                <td>最新だけ反映したい</td>
+                <td>アップデート</td>
+                <td>双方向を安易に使うこと</td>
+              </tr>
+              <tr>
+                <td>配布用にまったく同じ状態へ揃えたい</td>
+                <td>片方向同期 / ミラー</td>
+                <td>先で独自編集する運用</td>
+              </tr>
+              <tr>
+                <td>2台で相互利用したい</td>
+                <td>双方向同期 + 競合理解</td>
+                <td>重要データを無検証で双方向にすること</td>
+              </tr>
+            </tbody>
+          </table>
+
+          <p><strong>一言で言えば、Sync!Sync!Sync!LE は「状態を揃える道具」であって、「履歴まで守る万能バックアップ」ではありません。</strong><br>
+          なので、作品・原稿・写真・音声などの大事なデータでは、<strong>まず削除を伝播しない運用</strong> を基本にして、必要に応じて Time Machine や世代バックアップを併用するのが最も現実的です。</p>
+
+          <div class="note">
+            <strong>おすすめの実務構成：</strong><br>
+            普段の高速差分退避 = <strong>Sync!Sync!Sync!LE（追加コピー / アップデート）</strong><br>
+            履歴と復元 = <strong>Time Machine など別系統</strong><br>
+            これがいちばん事故耐性があります。
+          </div>
+        </section>
+
+        <section>
+          <h2>参考メモ</h2>
+          <p class="mini">※ 本ガイドは、公開されている公式配布ページ・更新履歴の記述、および公開ブログ等の利用報告をもとに整理したものです。実際の画面表記や細かな挙動は環境差・設定差があります。<br>
+          ※ とくに「新しいMacで動いた／不安定だった」という記述は、公式保証ではなく公開された実使用報告です。したがって、<strong>将来の macOS での継続動作を保証する情報ではありません</strong>。<br>
+          ※ このガイドの「おすすめ設定」は、公開されている挙動説明をもとにした実務上の提案です。</p>
+        </section>
+      </main>
+    </div>
+  </div>
+</body>
+</html>
