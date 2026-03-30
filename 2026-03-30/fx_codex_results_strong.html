@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>無駄なポジションが減った | CODEX FX Results</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;700;900&family=Noto+Serif+JP:wght@400;500;700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root { --bg:#fff; --surface:#f5f5f7; --ink:#1d1d1f; --ink2:#5f6670; --ink3:#8b9098; --line:#d9dbe0; --accent:#ff6a00; --accentSoft:#fff2e8; --dark:#0d0f12; --good:#eefbf1; --goodLine:#cfe8d4; --shadow:0 24px 60px rgba(0,0,0,.08); }
+    body { font-family:'Noto Sans JP',sans-serif; color:var(--ink); background:var(--bg); line-height:1.85; -webkit-font-smoothing:antialiased; }
+    a { color:inherit; text-decoration:none; }
+    nav { position:fixed; inset:0 0 auto 0; height:64px; display:flex; align-items:center; justify-content:space-between; padding:0 28px; background:rgba(255,255,255,.84); backdrop-filter:blur(18px) saturate(180%); border-bottom:1px solid rgba(0,0,0,.05); z-index:10; }
+    .brand { font:700 14px/1 Inter,sans-serif; letter-spacing:.04em; } .brand span { color:var(--accent); }
+    .navMini { font:700 11px/1 Inter,sans-serif; letter-spacing:.18em; color:var(--ink3); text-transform:uppercase; }
+    .hero { min-height:100vh; display:flex; align-items:center; padding:120px 24px 90px; background:radial-gradient(circle at 50% 15%, rgba(255,106,0,.10), transparent 34%), linear-gradient(180deg,#fff 0%,#f5f5f7 100%); }
+    .wrap,.narrow{max-width:1120px;margin:0 auto;width:100%;} .heroGrid{display:grid;grid-template-columns:1.1fr .9fr;gap:36px;align-items:center;} .narrow{max-width:840px;}
+    .eyebrow,.label{display:inline-flex;align-items:center;gap:10px;font:800 12px/1 Inter,sans-serif;letter-spacing:.18em;text-transform:uppercase;color:var(--accent);margin-bottom:20px;} .label{color:var(--ink3);} .label::before{content:'';width:18px;height:1px;background:currentColor;display:block;}
+    h1{font-family:'Noto Serif JP',serif;font-size:clamp(42px,6vw,80px);line-height:1.18;letter-spacing:-.02em;margin-bottom:24px;} h2{font-family:'Noto Serif JP',serif;font-size:clamp(34px,4.5vw,56px);line-height:1.32;letter-spacing:-.02em;margin-bottom:20px;} h1 em,h2 em{font-style:normal;color:var(--accent);} .lead,.sectionLead{font-size:20px;color:var(--ink2);} .heroBadges{display:flex;flex-wrap:wrap;gap:10px;margin-top:26px;} .badge{padding:10px 14px;border-radius:999px;background:#fff;border:1px solid var(--line);font-size:13px;color:var(--ink2);box-shadow:0 6px 18px rgba(0,0,0,.04);}
+    .card{background:rgba(255,255,255,.88);border:1px solid rgba(0,0,0,.06);border-radius:28px;padding:26px;box-shadow:var(--shadow);} .card h3{font:800 12px/1 Inter,sans-serif;letter-spacing:.14em;color:var(--ink3);text-transform:uppercase;margin-bottom:16px;}
+    .impact{display:grid;gap:12px;} .impactItem{background:var(--good);border:1px solid var(--goodLine);border-radius:18px;padding:18px;} .impactItem strong{display:block;font-size:24px;margin-bottom:6px;} .impactItem p{color:var(--ink2);font-size:15px;}
+    section{padding:120px 24px;} .dark{background:var(--dark);} .dark h2,.dark h3{color:#fff;} .dark .sectionLead,.dark p{color:rgba(255,255,255,.70);} .dark .label{color:rgba(255,255,255,.45);} .grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:42px;} .whiteCard{background:#fff;border:1px solid var(--line);border-radius:24px;padding:28px;box-shadow:0 10px 26px rgba(0,0,0,.03);} .whiteCard .num{font:800 46px/1 Inter,sans-serif;color:var(--accent);margin-bottom:10px;} .whiteCard h3{font-size:21px;margin-bottom:10px;} .whiteCard p{color:var(--ink2);font-size:16px;}
+    .compare{margin-top:44px;display:grid;grid-template-columns:1fr 1fr;gap:16px;} .compareBox{border-radius:24px;padding:26px;} .compareBox h3{font-size:24px;margin-bottom:12px;} .before{background:#181d24;border:1px solid rgba(255,255,255,.08);} .before p,.before li{color:rgba(255,255,255,.72);} .after{background:#fff;border:1px solid var(--line);} .after p,.after li{color:var(--ink2);} ul{display:grid;gap:12px;padding-left:20px;}
+    .proofList{margin-top:42px;display:grid;gap:14px;} .proofItem{background:#fff;border:1px solid var(--line);border-radius:24px;padding:24px;} .proofItem h3{font-size:22px;margin-bottom:8px;} .proofItem p{color:var(--ink2);font-size:17px;}
+    .quote{text-align:center;background:linear-gradient(180deg,#101318 0%,#0b0d10 100%);} .quoteMark{font:200 88px/1 Inter,sans-serif;color:rgba(255,255,255,.14);} .quote p{max-width:860px;margin:0 auto;font-family:'Noto Serif JP',serif;font-size:clamp(28px,3.6vw,42px);line-height:1.7;color:#fff;}
+    .cta{background:var(--surface);} .ctaBox{margin-top:40px;background:#fff;border:1px solid var(--line);border-radius:28px;padding:34px;box-shadow:var(--shadow);} .ctaBox h3{font-size:29px;margin-bottom:12px;} .ctaBox p{font-size:18px;color:var(--ink2);} .points{margin-top:18px;display:grid;gap:10px;} .points div{background:var(--accentSoft);border:1px solid #ffd3b7;border-radius:16px;padding:14px 16px;}
+    footer{padding:34px 24px 60px;text-align:center;border-top:1px solid var(--line);color:var(--ink3);font-size:13px;}
+    @media (max-width:980px){.heroGrid,.grid3,.compare{grid-template-columns:1fr;}} @media (max-width:720px){nav{padding:0 18px;} section{padding:96px 20px;}}
+  </style>
+</head>
+<body>
+<nav><div class="brand">CODEX <span>Results</span></div><div class="navMini">FX / RESULT / STRONG</div></nav>
+<header class="hero">
+  <div class="wrap heroGrid">
+    <div>
+      <div class="eyebrow">Result First</div>
+      <h1>欲しいのはAIではない。<br><em>勝ちやすくなる変化</em>だ。</h1>
+      <p class="lead">このシステムを欲しくなるかどうかは、機能の多さでは決まらない。導入した結果、無駄なポジションが減ったか。無駄な監視時間が減ったか。資産が少しずつ増えているか。結局そこだと思う。そして、このシステムでは実際にそこが変わった。</p>
+      <div class="heroBadges"><div class="badge">無駄打ちが減った</div><div class="badge">監視疲れが減った</div><div class="badge">判断が整った</div><div class="badge">資産がじわじわ増加</div></div>
+    </div>
+    <div class="card">
+      <h3>これがいちばん大事</h3>
+      <div class="impact">
+        <div class="impactItem"><strong>無駄なポジションが減った</strong><p>見る回数が多いほど、余計なエントリーは増えやすい。そこが明確に抑えられた。</p></div>
+        <div class="impactItem"><strong>無駄な監視時間が減った</strong><p>常時監視ではなく、必要な時だけ戻る形に変わった。生活への圧迫感が違う。</p></div>
+        <div class="impactItem"><strong>資産が少しずつ増えている</strong><p>派手な夢物語ではない。無駄を減らした結果が、そのままじわじわ積み上がっている。</p></div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<section>
+  <div class="narrow">
+    <div class="label">最初に言うべきこと</div>
+    <h2>このページは、<br>便利そうではなく、<em>効いた</em>と伝えるべきだった。</h2>
+    <p class="sectionLead">FXをやっている人が欲しいのは、格好いいシステムではない。余計な負けを減らし、監視時間を削り、結果としてお金が残る仕組みだ。その観点で言えば、このシステムはちゃんと意味がある。</p>
+  </div>
+</section>
+
+<section class="cta">
+  <div class="wrap">
+    <div class="label">変化を3つで言うと</div>
+    <h2>導入後に起きた変化は、<br>かなりわかりやすい。</h2>
+    <div class="grid3">
+      <div class="whiteCard"><div class="num">01</div><h3>無駄なポジションが減った</h3><p>勢いで入る、見すぎて入る、気になって入る。そういう質の低いポジションが減った。これはかなり大きい。</p></div>
+      <div class="whiteCard"><div class="num">02</div><h3>無駄な監視時間が減った</h3><p>毎日相場に気を取られる時間が減り、本当に見るべき場面だけに集中できるようになった。</p></div>
+      <div class="whiteCard"><div class="num">03</div><h3>資産が少しずつ増えている</h3><p>無理なエントリーが減ると、当然ながら資金効率も変わる。少しずつでも増えている事実があるのは強い。</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="dark">
+  <div class="wrap">
+    <div class="label">導入前 / 導入後</div>
+    <h2>いちばん危ないのは、<br>監視しすぎてトレードが荒れることだ。</h2>
+    <p class="sectionLead">このシステムはそこを直接潰してくる。だから効く。</p>
+    <div class="compare">
+      <div class="compareBox before">
+        <h3>導入前</h3>
+        <ul>
+          <li>何度もチャートを開いてしまう</li>
+          <li>監視しているうちに入らなくていい所で入る</li>
+          <li>相場が頭から離れず、生活も削られる</li>
+          <li>疲れた状態で判断し、精度が落ちる</li>
+        </ul>
+      </div>
+      <div class="compareBox after">
+        <h3>導入後</h3>
+        <ul>
+          <li>必要な時だけ通知で戻る</li>
+          <li>無駄なポジションが減る</li>
+          <li>監視時間が減って、頭が空く</li>
+          <li>結果として資産が少しずつ増える</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <div class="label">なぜそうなるのか</div>
+    <h2>この結果は、<br><em>設計された流れ</em>から生まれている。</h2>
+    <p class="sectionLead">元のフローは、市場データ取得 → 機械判定 → AI助言 → 通知 → 保存 → レビューまでつながっている。だから単なるアラートではなく、無駄を減らしやすい判断支援になっている。 fileciteturn0file0L6-L24</p>
+    <div class="proofList">
+      <div class="proofItem"><h3>条件整理をしてからAIに回す</h3><p>ゾーン、RR、phase、confidence などを <code>core_result</code> にまとめてから助言を取るので、雑な判断が入りにくい。 fileciteturn0file0L81-L90</p></div>
+      <div class="proofItem"><h3>AIは結論だけでなく理由も返す</h3><p>LONG / SHORT / WAIT に加え、quality、confidence、primary_reason まで返るので、不要なエントリーを減らしやすい。 fileciteturn0file0L92-L107</p></div>
+      <div class="proofItem"><h3>通知と保存で運用が積み上がる</h3><p>条件を満たした時だけ通知し、結果は JSON / CSV に保存される。だから感覚だけではなく、改善の材料が残る。 fileciteturn0file0L57-L79 fileciteturn0file0L109-L118</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="quote">
+  <div class="narrow"><div class="quoteMark">”</div><p>このシステムの強さは、<br><em>AIを使っていること</em>ではない。<br>無駄なポジションと無駄な監視時間を減らし、<br>その先で資産を少しずつ増やせることだ。</p></div>
+</section>
+
+<section class="cta">
+  <div class="narrow">
+    <div class="label">結論</div>
+    <h2>「便利そう」では弱い。<br>「ちゃんと効いた」が強い。</h2>
+    <p class="sectionLead">だからこのシステムを見せるなら、機能紹介より先に結果を言い切った方がいい。無駄なポジションが減った。無駄な監視時間が減った。資産が少しずつ増えている。その3つだけで、欲しさはかなり変わる。</p>
+    <div class="ctaBox">
+      <h3>この版で押し出すべき核心</h3>
+      <p>CODEXは、会話が上手いAIではなく、現実の運用を組んで結果を変えられるAIだ。そこまで見せて初めて、読む側は「これ欲しいかも」と思う。</p>
+      <div class="points"><div>無駄なポジションが減った</div><div>無駄な監視時間が減った</div><div>資産が少しずつ増えている</div></div>
+    </div>
+  </div>
+</section>
+<footer>このHTMLは、元のフロー資料をもとに「結果が伝わること」を最優先で再構成した強め版です。</footer>
+</body>
+</html>
