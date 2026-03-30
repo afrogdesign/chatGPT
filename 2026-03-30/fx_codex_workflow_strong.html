@@ -1,0 +1,524 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>もうチャートを見張り続けるな | CODEX FX Workflow</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;700;900&family=Noto+Serif+JP:wght@400;500;700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --bg: #ffffff;
+      --surface: #f5f5f7;
+      --surface-2: #fbfbfc;
+      --ink: #1d1d1f;
+      --ink-2: #5f6670;
+      --ink-3: #8b9098;
+      --line: #d9dbe0;
+      --accent: #ff6a00;
+      --accent-soft: #fff3ea;
+      --dark: #0d0f12;
+      --dark-2: #15181d;
+      --dark-3: #1d2128;
+      --good: #ecfff2;
+      --good-line: #c9efd2;
+      --warn: #fff7e8;
+      --warn-line: #f3deb0;
+      --blue: #f3f8ff;
+      --blue-line: #d9e7ff;
+      --radius: 24px;
+      --radius-sm: 16px;
+      --shadow: 0 24px 60px rgba(0,0,0,0.08);
+    }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: 'Noto Sans JP', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: var(--bg);
+      color: var(--ink);
+      line-height: 1.85;
+      -webkit-font-smoothing: antialiased;
+    }
+    a { color: inherit; text-decoration: none; }
+    img { max-width: 100%; display: block; }
+
+    nav {
+      position: fixed; inset: 0 0 auto 0; height: 64px; z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 28px;
+      background: rgba(255,255,255,0.84);
+      backdrop-filter: blur(18px) saturate(180%);
+      border-bottom: 1px solid rgba(0,0,0,0.05);
+    }
+    .brand {
+      font-family: 'Inter', sans-serif; font-size: 14px; font-weight: 700; letter-spacing: .04em;
+    }
+    .brand span { color: var(--accent); }
+    .nav-mini {
+      font-family: 'Inter', sans-serif; font-size: 11px; letter-spacing: .18em; color: var(--ink-3);
+      text-transform: uppercase;
+    }
+
+    .hero {
+      min-height: 100vh;
+      display: flex; align-items: center; justify-content: center;
+      padding: 120px 24px 90px;
+      background:
+        radial-gradient(circle at 50% 15%, rgba(255,106,0,.10), transparent 34%),
+        linear-gradient(180deg, #ffffff 0%, #f5f5f7 100%);
+      overflow: hidden;
+    }
+    .hero-inner {
+      width: 100%; max-width: 1120px; display: grid; grid-template-columns: 1.1fr .9fr; gap: 36px; align-items: center;
+    }
+    .eyebrow {
+      display: inline-block; margin-bottom: 20px;
+      font-family: 'Inter', sans-serif; font-size: 12px; font-weight: 700;
+      letter-spacing: .2em; text-transform: uppercase; color: var(--accent);
+    }
+    .hero h1 {
+      font-family: 'Noto Serif JP', serif;
+      font-size: clamp(38px, 6vw, 74px);
+      line-height: 1.22; letter-spacing: -.02em; font-weight: 700;
+      margin-bottom: 24px;
+    }
+    .hero h1 em { font-style: normal; color: var(--accent); }
+    .hero p.lead {
+      font-size: clamp(17px, 2vw, 22px);
+      color: var(--ink-2); max-width: 640px;
+    }
+    .hero-badges {
+      display: flex; flex-wrap: wrap; gap: 10px; margin-top: 28px;
+    }
+    .badge {
+      padding: 10px 14px; border-radius: 999px; background: #fff; border: 1px solid var(--line);
+      font-size: 13px; color: var(--ink-2); box-shadow: 0 6px 18px rgba(0,0,0,.04);
+    }
+    .hero-card {
+      background: rgba(255,255,255,.8); border: 1px solid rgba(0,0,0,.06); border-radius: 28px;
+      box-shadow: var(--shadow); padding: 26px; backdrop-filter: blur(16px);
+    }
+    .hero-card-head {
+      display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px;
+    }
+    .hero-card-title {
+      font-family: 'Inter', sans-serif; font-size: 12px; font-weight: 800; letter-spacing: .14em; color: var(--ink-3); text-transform: uppercase;
+    }
+    .mini-pill {
+      background: var(--accent-soft); color: var(--accent); border-radius: 999px; padding: 7px 10px;
+      font-size: 11px; font-weight: 700; font-family: 'Inter', sans-serif; letter-spacing: .08em;
+    }
+    .monitor {
+      background: linear-gradient(180deg, #11151b 0%, #1b2028 100%);
+      border-radius: 22px; padding: 18px; color: white;
+    }
+    .monitor-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 14px; }
+    .mini-box {
+      background: rgba(255,255,255,.06); border: 1px solid rgba(255,255,255,.08); border-radius: 16px; padding: 14px;
+    }
+    .mini-k { font-size: 11px; color: rgba(255,255,255,.45); text-transform: uppercase; letter-spacing: .14em; font-family: 'Inter', sans-serif; }
+    .mini-v { font-size: 20px; font-weight: 800; margin-top: 8px; }
+    .signal-row {
+      margin-top: 12px; background: rgba(255,106,0,.10); border: 1px solid rgba(255,106,0,.18); border-radius: 16px; padding: 14px;
+    }
+    .signal-row strong { color: #ffb07a; }
+
+    section { padding: 120px 24px; scroll-margin-top: 80px; }
+    .container { max-width: 1120px; margin: 0 auto; }
+    .container-narrow { max-width: 820px; margin: 0 auto; }
+    .label {
+      font-family: 'Inter', sans-serif; font-size: 12px; letter-spacing: .16em; text-transform: uppercase; color: var(--ink-3); font-weight: 800;
+      display: inline-flex; align-items: center; gap: 10px; margin-bottom: 20px;
+    }
+    .label::before { content: ''; width: 18px; height: 1px; background: currentColor; display: block; }
+    .label.dark { color: rgba(255,255,255,.45); }
+    h2.section-title {
+      font-family: 'Noto Serif JP', serif; font-size: clamp(32px, 4.5vw, 56px); line-height: 1.34; letter-spacing: -.02em; margin-bottom: 22px;
+    }
+    h2.section-title.white { color: #fff; }
+    .section-lead { font-size: 20px; color: var(--ink-2); }
+    .section-lead.white { color: rgba(255,255,255,.66); }
+
+    .toc-wrap { padding-top: 0; background: linear-gradient(180deg, #f5f5f7 0%, #fff 100%); }
+    .toc {
+      max-width: 1120px; margin: -36px auto 0; padding: 24px; border-radius: 28px; background: rgba(255,255,255,.82);
+      border: 1px solid rgba(0,0,0,.06); box-shadow: var(--shadow); backdrop-filter: blur(14px);
+    }
+    .toc-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 12px; }
+    .toc a {
+      display: block; background: var(--surface); border: 1px solid transparent; padding: 16px; border-radius: 18px; transition: .2s ease;
+    }
+    .toc a:hover { background: #fff; border-color: var(--line); transform: translateY(-2px); }
+    .toc .k { display: block; font-size: 11px; font-family: 'Inter', sans-serif; font-weight: 800; letter-spacing: .12em; color: var(--accent); text-transform: uppercase; margin-bottom: 6px; }
+    .toc .t { display: block; font-size: 15px; color: var(--ink); line-height: 1.5; }
+
+    .problem { background: var(--dark); }
+    .problem-list { display: grid; gap: 14px; margin-top: 42px; }
+    .problem-item {
+      background: rgba(255,255,255,.04); border: 1px solid rgba(255,255,255,.07); border-radius: 22px; padding: 22px;
+      display: grid; grid-template-columns: 54px 1fr; gap: 18px;
+    }
+    .problem-icon {
+      width: 54px; height: 54px; border-radius: 18px; display: grid; place-items: center;
+      background: rgba(255,106,0,.12); color: var(--accent); font-size: 24px;
+    }
+    .problem-item h3 { color: #fff; font-size: 22px; margin-bottom: 8px; }
+    .problem-item p { color: rgba(255,255,255,.66); font-size: 17px; }
+
+    .value { background: var(--surface); }
+    .stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; margin-top: 42px; }
+    .stat {
+      background: #fff; border: 1px solid var(--line); border-radius: 24px; padding: 28px; box-shadow: 0 10px 26px rgba(0,0,0,.03);
+    }
+    .stat .num {
+      font-family: 'Inter', sans-serif; font-size: 48px; line-height: 1; font-weight: 800; color: var(--accent); margin-bottom: 12px;
+    }
+    .stat h3 { font-size: 20px; margin-bottom: 10px; }
+    .stat p { color: var(--ink-2); font-size: 16px; }
+
+    .flow { background: #fff; }
+    .flow-chart {
+      margin-top: 48px; display: grid; gap: 14px;
+    }
+    .flow-row {
+      display: grid; grid-template-columns: repeat(5, 1fr); gap: 12px; align-items: stretch;
+    }
+    .flow-box {
+      position: relative; background: #fff; border: 1px solid var(--line); border-radius: 22px; padding: 18px;
+      min-height: 138px; box-shadow: 0 10px 24px rgba(0,0,0,.03);
+    }
+    .flow-step { font-family: 'Inter', sans-serif; font-size: 11px; font-weight: 800; letter-spacing: .12em; color: var(--accent); text-transform: uppercase; margin-bottom: 8px; }
+    .flow-box h3 { font-size: 20px; line-height: 1.45; margin-bottom: 8px; }
+    .flow-box p { font-size: 15px; color: var(--ink-2); line-height: 1.7; }
+    .arrow {
+      display: flex; align-items: center; justify-content: center; color: var(--ink-3); font-size: 30px; font-weight: 300;
+    }
+
+    .strengths { background: var(--dark-2); }
+    .cards { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; margin-top: 42px; }
+    .card {
+      background: rgba(255,255,255,.05); border: 1px solid rgba(255,255,255,.08); border-radius: 24px; padding: 24px;
+    }
+    .card .icon { font-size: 28px; margin-bottom: 12px; }
+    .card h3 { color: #fff; font-size: 21px; margin-bottom: 10px; }
+    .card p { color: rgba(255,255,255,.66); font-size: 16px; }
+
+    .steps { background: #fff; }
+    .step-list { margin-top: 48px; display: grid; gap: 18px; }
+    .step-item {
+      display: grid; grid-template-columns: 86px 1fr; gap: 18px; align-items: stretch;
+      background: var(--surface-2); border: 1px solid var(--line); border-radius: 24px; padding: 20px;
+    }
+    .step-no {
+      background: #fff; border: 1px solid var(--line); border-radius: 18px; display: grid; place-items: center;
+      font-family: 'Inter', sans-serif; font-size: 24px; font-weight: 800; color: var(--accent);
+    }
+    .step-item h3 { font-size: 24px; margin-bottom: 10px; }
+    .step-item p { color: var(--ink-2); font-size: 17px; }
+    .tags { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px; }
+    .tag { padding: 8px 12px; border-radius: 999px; background: #fff; border: 1px solid var(--line); font-size: 12px; color: var(--ink-2); }
+
+    .quote {
+      background: linear-gradient(180deg, #101318 0%, #0b0d10 100%); text-align: center;
+    }
+    .quote-mark { font-size: 88px; line-height: 1; color: rgba(255,255,255,.14); font-family: 'Inter', sans-serif; }
+    .quote p {
+      margin: 6px auto 0; max-width: 860px; color: #fff; font-family: 'Noto Serif JP', serif;
+      font-size: clamp(26px, 3.6vw, 42px); line-height: 1.7;
+    }
+    .quote em { font-style: normal; color: var(--accent); }
+
+    .cta { background: var(--surface); }
+    .cta-box {
+      margin-top: 42px; background: #fff; border: 1px solid var(--line); border-radius: 28px; padding: 34px; box-shadow: var(--shadow);
+    }
+    .cta-box h3 { font-size: 28px; margin-bottom: 12px; }
+    .cta-box p { font-size: 18px; color: var(--ink-2); }
+    .cta-points { margin-top: 18px; display: grid; gap: 10px; }
+    .cta-points div {
+      background: var(--accent-soft); border: 1px solid #ffd5bc; padding: 14px 16px; border-radius: 16px; font-size: 16px;
+    }
+
+    footer {
+      padding: 34px 24px 60px; text-align: center; font-size: 13px; color: var(--ink-3);
+      border-top: 1px solid var(--line);
+    }
+
+    @media (max-width: 980px) {
+      .hero-inner, .flow-row, .cards, .stats { grid-template-columns: 1fr; }
+      .arrow { display: none; }
+    }
+    @media (max-width: 720px) {
+      nav { padding: 0 18px; }
+      section { padding: 96px 20px; }
+      .step-item, .problem-item { grid-template-columns: 1fr; }
+      .step-no { min-height: 72px; }
+    }
+  </style>
+</head>
+<body>
+  <nav>
+    <div class="brand">CODEX <span>Workflow</span></div>
+    <div class="nav-mini">FX / AI / SYSTEM</div>
+  </nav>
+
+  <header class="hero" id="top">
+    <div class="hero-inner">
+      <div>
+        <div class="eyebrow">For Analog Traders</div>
+        <h1>もうチャートを<em>見張り続けるな</em>。</h1>
+        <p class="lead">毎日チャートに張り付いて、チャンスも生活も削っていないだろうか。AIとCODEXを組むと、相場の常時監視は仕組みに渡し、人間は“本当に判断が必要な場面だけ”見ればよくなる。これは甘えではない。むしろ、古いやり方を捨てて、判断の精度を上げるための更新だ。</p>
+        <div class="hero-badges">
+          <div class="badge">24H監視自動化</div>
+          <div class="badge">見るべき場面だけ通知</div>
+          <div class="badge">判断ログ保存</div>
+          <div class="badge">ムダ監視を圧縮</div>
+        </div>
+      </div>
+      <div class="hero-card">
+        <div class="hero-card-head">
+          <div class="hero-card-title">System Snapshot</div>
+          <div class="mini-pill">CODEX READY</div>
+        </div>
+        <div class="monitor">
+          <div class="mini-k">Status</div>
+          <div class="mini-v">Market Watch Running</div>
+          <div class="monitor-grid">
+            <div class="mini-box">
+              <div class="mini-k">Input</div>
+              <div class="mini-v">Price / Zone</div>
+            </div>
+            <div class="mini-box">
+              <div class="mini-k">AI Advice</div>
+              <div class="mini-v">WAIT / LONG / SHORT</div>
+            </div>
+            <div class="mini-box">
+              <div class="mini-k">Notify</div>
+              <div class="mini-v">Mail Trigger</div>
+            </div>
+            <div class="mini-box">
+              <div class="mini-k">Logs</div>
+              <div class="mini-v">JSON / CSV</div>
+            </div>
+          </div>
+          <div class="signal-row"><strong>Signal Concept:</strong> ずっと見張るのではなく、必要な時だけ呼ばれる。</div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <section class="toc-wrap">
+    <div class="toc">
+      <div class="toc-grid">
+        <a href="#problem"><span class="k">Problem</span><span class="t">まだ手で見張っている人へ</span></a>
+        <a href="#value"><span class="k">Value</span><span class="t">アナログ運用のままだと、何を失い続けるか</span></a>
+        <a href="#flow"><span class="k">Flow</span><span class="t">この仕組みで、手動監視はここまで減らせる</span></a>
+        <a href="#strengths"><span class="k">Why CODEX</span><span class="t">なぜCODEXは“使える側”のAIなのか</span></a>
+        <a href="#steps"><span class="k">Steps</span><span class="t">人間がやるべきことは、最後だけ</span></a>
+        <a href="#cta"><span class="k">Conclusion</span><span class="t">結論</span></a>
+      </div>
+    </div>
+  </section>
+
+  <section class="problem" id="problem">
+    <div class="container-narrow">
+      <div class="label dark">まだ手で見張っている人へ</div>
+      <h2 class="section-title white">いまだに、こういう非効率を続けていないか。</h2>
+      <p class="section-lead white">裁量は残したい。でも、ずっと張り付きたくはない。そんな人ほど、この手の仕組みは効く。</p>
+      <div class="problem-list">
+        <div class="problem-item">
+          <div class="problem-icon">⏱️</div>
+          <div>
+            <h3>何度もチャートを開いてしまう</h3>
+            <p>朝も昼も夜も、反射でチャートを開いてしまう。だが実際には、ほとんどが“見る意味のない時間”だ。チャンスを探しているつもりで、先に削られているのは自分の集中力と生活のほうかもしれない。</p>
+          </div>
+        </div>
+        <div class="problem-item">
+          <div class="problem-icon">🧠</div>
+          <div>
+            <h3>監視で疲れて、判断の精度が落ちる</h3>
+            <p>ずっと見ていると、見るべき瞬間よりも、見なくていい時間に精神を持っていかれる。結果、肝心な場面で雑になる。</p>
+          </div>
+        </div>
+        <div class="problem-item">
+          <div class="problem-icon">📩</div>
+          <div>
+            <h3>通知は欲しいが、既製品では物足りない</h3>
+            <p>TradingViewの単純アラートだけでは足りない。条件整理、AI助言、ログ保存まで一気通貫で回したい。</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="value" id="value">
+    <div class="container">
+      <div class="label">アナログ運用のままだと、何を失い続けるか</div>
+      <h2 class="section-title">裁量派でも、<br>仕組み化した人から時間を取り戻していく。</h2>
+      <p class="section-lead">FXは判断のゲームに見えて、実際は「監視コスト」をどう処理するかのゲームでもある。そこを人力のままにすると、うまい人ほど先に疲れる。</p>
+      <div class="stats">
+        <div class="stat">
+          <div class="num">24H</div>
+          <h3>市場は止まらない</h3>
+          <p>人間は止まる。だからこそ、ずっと見る役と、判断する役を分けた方がいい。</p>
+        </div>
+        <div class="stat">
+          <div class="num">3x</div>
+          <h3>毎日かなりの時間が消えている</h3>
+          <p>『ちょっと確認』の積み重ねで、毎日かなりの時間が消えていく。常時監視を仕組みに渡すだけで、その損失はかなり圧縮できる。</p>
+        </div>
+        <div class="stat">
+          <div class="num">LOG</div>
+          <h3>毎回ゼロから見直さなくていい</h3>
+          <p>判定、通知、結果、理由が残る。つまり、勘と勢いだけの運用から抜けやすくなる。</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="flow" id="flow">
+    <div class="container">
+      <div class="label">この仕組みで、手動監視はここまで減らせる</div>
+      <h2 class="section-title">人が全部見なくても、<br>判断材料はここまで整えられる。</h2>
+      <p class="section-lead">元のフローは、市場データ取得 → 機械判定 → AI助言 → 通知 → 保存 → レビューという構造になっている。つまり、ただのアラートではなく“判断支援の導線”まで組まれている。 fileciteturn0file0L6-L24</p>
+
+      <div class="flow-chart">
+        <div class="flow-row">
+          <div class="flow-box">
+            <div class="flow-step">Step 1</div>
+            <h3>相場をずっと見続ける役を外す</h3>
+            <p>価格データを定時取得し、人間の代わりにシステムが見続ける。ここでまず、“自分が見張り続ける前提”を外す。</p>
+          </div>
+          <div class="arrow">→</div>
+          <div class="flow-box">
+            <div class="flow-step">Step 2</div>
+            <h3>機械判定をまとめる</h3>
+            <p>ゾーン、RR、phase、confidence などを束ねて core_result を作る。AIに渡す前の整理がここで終わる。 fileciteturn0file0L81-L90</p>
+          </div>
+          <div class="arrow">→</div>
+          <div class="flow-box">
+            <div class="flow-step">Step 3</div>
+            <h3>AIが助言を返す</h3>
+            <p>AIは LONG / SHORT / WAIT などを返し、quality、confidence、primary_reason まで整える。 fileciteturn0file0L92-L107</p>
+          </div>
+        </div>
+        <div class="flow-row">
+          <div class="flow-box">
+            <div class="flow-step">Step 4</div>
+            <h3>本当に見るべき時だけ呼び出す</h3>
+            <p>条件を満たした時だけ通知に変える。つまり、普段は見なくていい。チャンスが来た時だけ人間が戻ればいい。 fileciteturn0file0L57-L79</p>
+          </div>
+          <div class="arrow">→</div>
+          <div class="flow-box">
+            <div class="flow-step">Step 5</div>
+            <h3>結果を保存する</h3>
+            <p>JSON / CSV / 通知履歴へ保存する。後からレビューできるので、勘だけに依存しない。 fileciteturn0file0L109-L118</p>
+          </div>
+          <div class="arrow">→</div>
+          <div class="flow-box">
+            <div class="flow-step">Step 6</div>
+            <h3>人間は最後に判断する</h3>
+            <p>全部を自動売買にしなくてもいい。監視だけ任せて、最終判断だけ人が持てば十分に時短になる。</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="strengths" id="strengths">
+    <div class="container">
+      <div class="label dark">なぜCODEXは“使える側”のAIなのか</div>
+      <h2 class="section-title white">会話して終わりではなく、仕組みまで落とせる。</h2>
+      <p class="section-lead white">普通のAIチャットは、会話はうまい。だが実務では“最後は人間が全部つなぐ”ことが多い。CODEXが強いのは、相談で終わらず、判定フロー、通知、保存、改善まで運用として組めるところだ。 fileciteturn0file0L47-L55</p>
+      <div class="cards">
+        <div class="card">
+          <div class="icon">🧩</div>
+          <h3>役割分担できる</h3>
+          <p>機械判定とAI助言を分けるので、何をルール化し、何をAIに任せるかが見えやすい。</p>
+        </div>
+        <div class="card">
+          <div class="icon">📬</div>
+          <h3>通知までつなげられる</h3>
+          <p>良い分析で終わらず、メールやアラートとして現実の行動に接続できる。</p>
+        </div>
+        <div class="card">
+          <div class="icon">🗂️</div>
+          <h3>後で検証できる</h3>
+          <p>CSV と JSON に残るから、再現性のない“その場の勘”から少しずつ抜けられる。</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="steps" id="steps">
+    <div class="container-narrow">
+      <div class="label">人間がやるべきことは、最後だけ</div>
+      <h2 class="section-title">全部自動売買でなくても、<br>ここまで短縮できる。</h2>
+      <p class="section-lead">いきなり全部自動売買にする必要はない。むしろ最初は、監視・整理・通知だけ自動化すれば十分強い。裁量は残したまま、ムダ時間だけを切れる。そこがいちばん現実的で、いちばん効く。</p>
+      <div class="step-list">
+        <div class="step-item">
+          <div class="step-no">01</div>
+          <div>
+            <h3>チャート監視をシステムに移す</h3>
+            <p>自分の目でずっと見る前提をやめる。まずここがいちばん大きい。これだけでも生活時間の戻り方が変わる。</p>
+            <div class="tags"><span class="tag">定時実行</span><span class="tag">市場データ取得</span><span class="tag">監視自動化</span></div>
+          </div>
+        </div>
+        <div class="step-item">
+          <div class="step-no">02</div>
+          <div>
+            <h3>見るべき条件を先に整理する</h3>
+            <p>ゾーン、方向、リスクリワード、信頼度などを先に構造化する。人間の頭の中だけでやらない。</p>
+            <div class="tags"><span class="tag">core_result</span><span class="tag">RR</span><span class="tag">phase</span></div>
+          </div>
+        </div>
+        <div class="step-item">
+          <div class="step-no">03</div>
+          <div>
+            <h3>AIに助言させる</h3>
+            <p>LONG / SHORT / WAIT を返させるだけでも意味がある。さらに理由まで返せば、通知の重みも変わる。</p>
+            <div class="tags"><span class="tag">AI Advice</span><span class="tag">confidence</span><span class="tag">primary_reason</span></div>
+          </div>
+        </div>
+        <div class="step-item">
+          <div class="step-no">04</div>
+          <div>
+            <h3>最後だけ人間が見る</h3>
+            <p>裁量は消さない。むしろ、裁量を本当に価値のある場面だけに残す。そのための時短設計と考えた方がいい。</p>
+            <div class="tags"><span class="tag">裁量維持</span><span class="tag">時短</span><span class="tag">現実運用</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="quote">
+    <div class="container-narrow">
+      <div class="quote-mark">”</div>
+      <p>チャートを見る時間を減らすことは、<br><em>トレードを雑にすることではない。</em><br>むしろ、見るべき場面だけに集中するための設計だ。</p>
+    </div>
+  </section>
+
+  <section class="cta" id="cta">
+    <div class="container-narrow">
+      <div class="label">結論</div>
+      <h2 class="section-title">手で見張る時代は、<br>もう終わりにした方がいい。</h2>
+      <p class="section-lead">FXでいちばん先に削られるのは、お金より前に時間と集中力だ。だから、全部を自分で見張る時代は、もう終わりにした方がいい。</p>
+      <div class="cta-box">
+        <h3>このシステムが刺さる理由</h3>
+        <p>CODEXは、ただ答えるAIではなく、運用そのものを組み立てる側に回せる。そこが強い。SNSではAIの便利さがよく語られるが、本当に生活時間を取り返せるところまで落とし込めるAIはまだ少ない。</p>
+        <div class="cta-points">
+          <div>人間がやるべきことを、最後の判断だけに絞れる</div>
+          <div>通知・保存・レビューまでつながるから、実務の導線になる</div>
+          <div>まだ手で見張っているなら、一度この発想で運用ごと作り直してみる価値はある</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    このHTMLは、元の Obsidian 用フロー資料と参考HTMLのトーンをもとに再構成したものです。まだ手で見張っているなら、一度この発想で運用ごと作り直してみる価値はある。
+  </footer>
+</body>
+</html>
